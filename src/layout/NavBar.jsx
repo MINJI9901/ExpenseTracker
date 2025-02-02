@@ -25,26 +25,35 @@ import Image from 'next/image';
 import logo from '../../public/img/orange_heart_favicon.ico';
 
 import { FilterContext, FilterProvider } from '@/context/filterContext';
+import { UserContext } from '@/context/UserContext';
+
+import { authenticateUser } from '@/app/login/actions';
+import { logout } from '@/app/login/actions';
+
+// const checkUser = async () => {
+//   return await authenticateUser();
+// }
+
+// const logOut = async () => {
+//   const { error } = await supabase.auth.signOut()
+
+//   return error
+// }
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const currentMonth = month[(new Date()).getMonth()]
 const currentYear = (new Date()).getFullYear()
 
-// for MOBILE MENU
-const pages = [currentMonth, 'Monthly', 'Category', 'Spending'];
 // for DESKTOP MENU
 const pageMenu = {
   Monthly: ['Daily', 'Monthly', 'Yearly'],
   Category: '',
-  Spending: ['Spending', 'Earning', 'Asset']
+  Expense: ['Expense', 'Income', 'Asset']
 }
-
-// for USER MENU
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 let selectedMonth;
 let selectedYear;
-let selectedDate = Date.now();
+// let selectedDate = Date.now();
 
 export default function NavBar() {
   const theme = useTheme();
@@ -52,30 +61,47 @@ export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = useState({});
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [menuItems, setMenuItems] = useState(pageMenu);
-  const {menu, setMenu, selectedDate, setSelectedDate} = useContext(FilterContext);
-  // const [menu, setMenu] = useState(pages);
-  // const [menuItems, setMenuItems] = useState(pageMenu);
-  // const [selectedDate, setSelectedDate] = useState(Date.now());
+  const { menu, setMenu, selectedDate, setSelectedDate } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
-  const handleOpenNavMenu = (event, page) => {
-    // setAnchorElNav(event.currentTarget);
-    setAnchorElNav((prev) => ({...prev, [page]: event.currentTarget}))
+  const checkUser = async () => {
+    const user = await authenticateUser();
+    setUser(user)
+  };
+
+  React.useEffect(() => {
+  
+    checkUser();
+  
+  }, [logout])
+
+  // for USER MENU
+  const settings = user ? ['Profile', 'Account', 'Dashboard', 'Logout'] : ['Login/SignUp'];
+
+  const handleOpenNavMenu = (e, page) => {
+    setAnchorElNav((prev) => ({...prev, [page]: e.currentTarget}))
   };
 
   const handleCloseNavMenu = (page) => {
     setAnchorElNav((prev) => ({...prev, [page]: null}));
   };
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+  const handleOpenUserMenu = (e) => {
+    setAnchorElUser(e.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = async (e) => {
     setAnchorElUser(null);
+    const setting = e.target.innerText;
+    if (setting === 'Logout') {
+      const logoutUser = await logout();
+      console.log('logoutUser: ', logoutUser);
+      setUser(null);
+    }
   };
 
-  const clickMenuItem = (event, page) => {
-    const item = event.target.innerText;
+  const clickMenuItem = (e, page) => {
+    const item = e.target.innerText;
 
     setMenu((prev) => {
       const arr = [...prev];
@@ -95,17 +121,14 @@ export default function NavBar() {
     setAnchorElNav((prev) => ({...prev, [page]: null}));
   };
 
-  const handleCalendar = (event, page) => {
-    selectedMonth = event.$d.toDateString().split(' ')[1];
-    selectedYear = event.$y
-    console.log("selected month: ", selectedMonth);
-    console.log("selected year: ", selectedYear);
+  const handleCalendar = (e, page) => {
+    selectedMonth = e.$d.toDateString().split(' ')[1];
+    selectedYear = e.$y
   }
 
   const handleDateSubmit = (page) => {
     if (selectedMonth) {
       setSelectedDate(new Date(`${selectedYear}-${selectedMonth}-01`));
-      console.log("selected date: ", selectedDate);
 
       setMenu((prev) => {
         const arr = [...prev];
@@ -118,15 +141,6 @@ export default function NavBar() {
   }
 
   return (
-    // <FilterContext.Provider value={{
-    //   date: selectedDate,
-    //   period: menu[1],
-    //   category: menu[2],
-    //   section: menu[3],
-    //   setSelectedDate, // Optionally expose setter
-    //   setMenu,         // Optionally expose setter
-    //   handleDateSubmit,
-    // }}>
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -214,7 +228,7 @@ export default function NavBar() {
             >
             {month.includes(page) ?
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DateCalendar', 'DateCalendar', 'DateCalendar']}>
+                <DemoContainer components={['DateCalendar']}>
                   <DemoItem>
                     <DateCalendar
                       defaultValue={dayjs(selectedDate)}
@@ -246,7 +260,7 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src="" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -275,6 +289,5 @@ export default function NavBar() {
         </Toolbar>
       </Container>
     </AppBar>
-    // </FilterContext.Provider>
   );
 }

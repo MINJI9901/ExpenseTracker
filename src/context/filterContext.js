@@ -5,13 +5,13 @@ export const FilterContext = createContext({
     date: new Date(),
     period: 'monthly',
     category: null,
-    section: 'spending'
+    section: 'expense'
 });
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const currentMonth = month[(new Date()).getMonth()]
 
-const pages = [currentMonth, 'Monthly', 'Category', 'Spending'];
+const pages = [currentMonth, 'Monthly', 'Category', 'Expense'];
 
 export const FilterProvider = ({ children }) => {
     const [menu, setMenu] = useState(pages);
@@ -19,7 +19,6 @@ export const FilterProvider = ({ children }) => {
 
     return (
         <FilterContext.Provider value={{
-            date: selectedDate,
             period: menu[1],
             category: menu[2],
             section: menu[3],

@@ -5,8 +5,26 @@ const ExpenseSchema = new mongoose.Schema({
     amount: Number,
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'ExpenseCategory' },
     sub_category: {
-        type: String,
-        // validate: {
+        _id: String,
+        name: String,
+        budget: Number,
+    },
+    date: {
+        type: Date, 
+        default: Date.now,
+        // get: (date) => date.toLocaleDateString("en-US") // getter
+       }
+})
+
+// delete mongoose.models.Expense;
+if (mongoose.models.Expense) {
+    mongoose.deleteModel('Expense');
+}
+
+export default mongoose.model('Expense', ExpenseSchema);
+
+
+// validate: {
         //     validator: async function (value) {
         //         if (!this.category) return true; // Skip validation if no category is selected
         //         const category = await mongoose.model('ExpenseCategory').findById(this.category);
@@ -15,12 +33,3 @@ const ExpenseSchema = new mongoose.Schema({
         //     },
         //     message: (props) => `${props.value} is not a valid sub-category for the selected category.`
         // }
-    },
-    date: {
-        type: Date, 
-        default: Date.now,
-        get: (date) => date.toLocaleDateString("en-US") // getter
-       }
-})
-
-export default mongoose.models.Expense || mongoose.model('Expense', ExpenseSchema);

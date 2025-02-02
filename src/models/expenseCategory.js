@@ -4,7 +4,10 @@ const ExpenseCategorySchema = new mongoose.Schema({
     category: String,
     sub_category: [{
         name: String,
-        budget: Number,
+        budget: {
+            type: Number,
+            default: 0
+        },
     }],
     date: {
         type: Date,
