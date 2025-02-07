@@ -1,62 +1,107 @@
-"use client"
+"use client";
 import { useState, useContext, useEffect } from "react";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import { FilterContext } from "@/context/filterContext";
+import { Typography, useTheme } from "@mui/material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-export default function DateRangeSelector({ dateRangeState, setDateRangeState }) {
-    const filters = useContext(FilterContext);
-    const { selectedDate } = filters;
+export default function DateRangeSelector({
+  dateRangeState,
+  setDateRangeState,
+}) {
+  const { palette } = useTheme();
+  const filters = useContext(FilterContext);
+  const { selectedDate } = filters;
 
-    const defaultStartDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-    const defaultEndDate = selectedDate.getMonth() === new Date().getMonth() ? new Date() : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
-    useEffect(() => {
-        setDateRangeState({start: defaultStartDate, end: defaultEndDate})
-    }, [selectedDate])
+  const defaultStartDate = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    1
+  );
+  const defaultEndDate =
+    selectedDate.getMonth() === new Date().getMonth()
+      ? new Date()
+      : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
 
-    const handleStartDate = (e) => {
-        setDateRangeState(prev => ({...prev, start: e.$d}));
-    }
+  useEffect(() => {
+    setDateRangeState({ start: defaultStartDate, end: defaultEndDate });
+  }, [selectedDate]);
 
-    const handleEndDate = (e) => {
-        setDateRangeState(prev => ({...prev, end: e.$d}));
-    }
+  const handleStartDate = (e) => {
+    setDateRangeState((prev) => ({ ...prev, start: e.$d }));
+  };
 
-    return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker', 'DatePicker']}>
-                <DatePicker
-                    label='from'
-                    defaultValue={dayjs(defaultStartDate)}
-                    value={dayjs(dateRangeState.start)}
-                    minDate={dayjs('2024-01-01')}
-                    maxDate={dayjs(new Date())}
-                    slotProps={{
-                        textField: { 
-                            variant: 'standard'
-                        }
-                    }}
-                    onChange={handleStartDate}
-                />
-                <DatePicker
-                    // value={value}
-                    // onChange={(newValue) => setValue(newValue)}
-                    label='to'
-                    defaultValue={dayjs(defaultEndDate)}
-                    value={dayjs(dateRangeState.end)}
-                    minDate={dayjs('2024-01-01')}
-                    maxDate={dayjs(new Date())}
-                    slotProps={{
-                        textField: { 
-                            variant: 'standard'
-                        }
-                    }}
-                    onChange={handleEndDate}
-                />
-            </DemoContainer>
-        </LocalizationProvider>
-    )
+  const handleEndDate = (e) => {
+    setDateRangeState((prev) => ({ ...prev, end: e.$d }));
+  };
+
+  const handleOpenDatePicker = () => {
+    setIsDatePickerOpen(!isDatePickerOpen);
+  };
+
+  return (
+    <>
+      <Typography
+        display={{ xs: "block", md: "none" }}
+        my="1rem"
+        onClick={handleOpenDatePicker}
+      >
+        <CalendarMonthIcon />
+        {` ${dateRangeState.start.toLocaleDateString("en", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })} - ${dateRangeState.end.toLocaleDateString("en", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })}`}
+      </Typography>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer
+          components={["DatePicker", "DatePicker"]}
+          sx={{
+            display: { xs: isDatePickerOpen ? "flex" : "none", md: "flex" },
+            border: { xs: "1px solid lightGray", md: 0 },
+            borderRadius: "0.5rem",
+            padding: { xs: "1rem", md: 0 },
+          }}
+        >
+          <DatePicker
+            label="from"
+            defaultValue={dayjs(defaultStartDate)}
+            value={dayjs(dateRangeState.start)}
+            minDate={dayjs("2024-01-01")}
+            maxDate={dayjs(new Date())}
+            slotProps={{
+              textField: {
+                variant: "standard",
+              },
+            }}
+            onChange={handleStartDate}
+          />
+          <DatePicker
+            // value={value}
+            // onChange={(newValue) => setValue(newValue)}
+            label="to"
+            defaultValue={dayjs(defaultEndDate)}
+            value={dayjs(dateRangeState.end)}
+            minDate={dayjs("2024-01-01")}
+            maxDate={dayjs(new Date())}
+            slotProps={{
+              textField: {
+                variant: "standard",
+              },
+            }}
+            onChange={handleEndDate}
+          />
+        </DemoContainer>
+      </LocalizationProvider>
+    </>
+  );
 }

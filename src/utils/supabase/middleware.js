@@ -37,6 +37,8 @@ export async function updateSession(request) {
     data: { user }, error
   } = await supabase.auth.getUser()
 
+  console.log('user: ', user)
+
   // console.log('User:', user, 'Error:', error)
 
   if (

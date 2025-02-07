@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useContext, useEffect } from "react";
 
@@ -12,57 +12,107 @@ import CategorySelectBox from "./CategorySelectBox";
 import { addBreakdown } from "@/app/actions";
 
 export default function FormContainer({ getBreakdownData }) {
-    const theme = useTheme();
-    const filters = useContext(FilterContext);
-    const { section, selectedDate, setSelectedDate } = filters;
+  const { palette } = useTheme();
+  const filters = useContext(FilterContext);
+  const { section, selectedDate, setSelectedDate } = filters;
 
-    const [categories, setCategories] = useState([]);
-    const [newBreakdown, setNewBreakdown] = useState({});
-    const [isSubmitted, setIsSubmitted] = useState(false); // TO VALIDATE FORM WHEN IT'S SUBMITTED
-    const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [newBreakdown, setNewBreakdown] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false); // TO VALIDATE FORM WHEN IT'S SUBMITTED
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getCategoryData = async () => {
-            const data = await getCategories(section, selectedDate);
-    
-            setCategories(data);
-        }
+  useEffect(() => {
+    const getCategoryData = async () => {
+      const data = await getCategories(section, selectedDate);
 
-        getCategoryData();
+      setCategories(data);
+    };
 
-        setLoading(false);
-        console.log('selected date: ', selectedDate)
-        // TO UPDATE CATEGORY DEPENDING ON SECTION AND MONTH CHANGES
-    }, [section, selectedDate.getMonth()]);
+    getCategoryData();
 
-    const handleSubmit = async (e) => {
-        if (e.target.checkValidity()) {
-            e.preventDefault();
-            await addBreakdown(section, newBreakdown);
-            // TO UPDATE DATE IN DISPLAYING SECTION CORRESPONDING TO NEW SELECTED DATE
-            setSelectedDate(newBreakdown.date);
-            getBreakdownData(true);
-        } else {
-            e.preventDefault();
-            setIsSubmitted(true);
-        }
+    setLoading(false);
+    console.log("selected date: ", selectedDate);
+    // TO UPDATE CATEGORY DEPENDING ON SECTION AND MONTH CHANGES
+  }, [section, selectedDate.getMonth()]);
+
+  const handleSubmit = async (e) => {
+    if (e.target.checkValidity()) {
+      e.preventDefault();
+      await addBreakdown(section, newBreakdown);
+      // TO UPDATE DATE IN DISPLAYING SECTION CORRESPONDING TO NEW SELECTED DATE
+      setSelectedDate(newBreakdown.date);
+      getBreakdownData(true);
+    } else {
+      e.preventDefault();
+      setIsSubmitted(true);
     }
+  };
 
-    if (loading) return <div>loading...</div> 
+  const handleOpenForm = () => {
+    setIsFormOpen(!isFormOpen);
+  };
 
-    return (
-        <Box component='form' onSubmit={handleSubmit} margin='20% 1rem' height='100dvh' noValidate>
-            <InputBox label="Name" setNewBreakdown={setNewBreakdown} isSubmitted={isSubmitted}/>
-            <InputBox label="Amount" adornment="$" setNewBreakdown={setNewBreakdown} isSubmitted={isSubmitted}/>
-            <CategorySelectBox label="Category" categoryData={categories} setNewBreakdown={setNewBreakdown} isSubmitted={isSubmitted}/>
-            <InputBox needDatePicker={true} setNewBreakdown={setNewBreakdown}/>
-            <Button 
-                type="submit"
-                fullWidth
-                sx={{display: 'inline-block', bgcolor: theme.palette.primary.dark, color: 'white', fontSize: 'large', fontWeight: '700', margin: '2rem auto'}}
-            >
-                Save
-            </Button>
-        </Box>
-    )
+  if (loading) return <div>loading...</div>;
+
+  return (
+    <>
+      <Button
+        sx={{
+          display: { xs: "block", md: "none" },
+          bgcolor: palette.primary.dark,
+          color: "black",
+          fontWeight: 700,
+          width: "90%",
+          margin: "1.5rem",
+        }}
+        onClick={handleOpenForm}
+      >
+        {isFormOpen ? "Click To Close" : "Click To Add"}
+      </Button>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: { xs: isFormOpen ? "block" : "none", md: "block" },
+          margin: { xs: "1rem", md: "20% 1rem" },
+        }}
+        noValidate
+      >
+        <InputBox
+          label="Name"
+          setNewBreakdown={setNewBreakdown}
+          isSubmitted={isSubmitted}
+        />
+        <InputBox
+          label="Amount"
+          adornment="$"
+          setNewBreakdown={setNewBreakdown}
+          isSubmitted={isSubmitted}
+          isNumber={true}
+        />
+        <CategorySelectBox
+          label="Category"
+          categoryData={categories}
+          setNewBreakdown={setNewBreakdown}
+          isSubmitted={isSubmitted}
+        />
+        <InputBox needDatePicker={true} setNewBreakdown={setNewBreakdown} />
+        <Button
+          type="submit"
+          fullWidth
+          sx={{
+            display: "inline-block",
+            bgcolor: palette.primary.dark,
+            color: "white",
+            fontSize: "large",
+            fontWeight: "700",
+            margin: "2rem auto",
+          }}
+        >
+          Save
+        </Button>
+      </Box>
+    </>
+  );
 }

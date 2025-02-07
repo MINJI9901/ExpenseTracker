@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const AssetCategorySchema = new mongoose.Schema({
-    category: String
-})
+  category: String,
+  user_id: String,
+});
 
-export default mongoose.model('AssetCategory', AssetCategorySchema);
+export default mongoose.model("AssetCategory", AssetCategorySchema);

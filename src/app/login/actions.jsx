@@ -1,14 +1,14 @@
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from "@/utils/supabase/server";
 
 export async function authenticateUser() {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser();
   // if (error || !data?.user) {
   //     redirect('/login')
   // }
@@ -16,58 +16,57 @@ export async function authenticateUser() {
   // console.log('data: ', data)
   // console.log('error: ', error)
 
-
-  return data?.user
+  return data?.user || error;
 }
 
 export async function login(formData) {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
   try {
     const data = {
-      email: formData.get('email'),
-      password: formData.get('password'),
-    }
-  
-    const { error } = await supabase.auth.signInWithPassword(data)
-  
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    const { error } = await supabase.auth.signInWithPassword(data);
+
     if (error) {
-      return false
+      return false;
     }
   } catch {
     return false;
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath("/", "layout");
+  redirect("/");
 }
 
 export async function signup(formData) {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
-    email: formData.get('email'),
-    password: formData.get('password'),
-  }
+    email: formData.get("email"),
+    password: formData.get("password"),
+  };
 
-  console.log('signup data: ', data)
+  console.log("signup data: ", data);
 
-  const { error } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect('/error')
+    redirect("/error");
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath("/", "layout");
+  redirect("/");
 }
 
 export async function logout() {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   // const data = {
   //   email: formData.get('email'),
@@ -76,12 +75,12 @@ export async function logout() {
 
   // console.log('logout data: ', data)
 
-  const { error } = await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut();
 
   if (error) {
-    redirect('/error')
+    redirect("/error");
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath("/", "layout");
+  redirect("/");
 }

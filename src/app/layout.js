@@ -4,9 +4,11 @@ import ThemeProvider from "@/theme/ThemeProvider";
 import { FilterProvider } from "@/context/filterContext";
 import { UserProvider } from "@/context/UserContext";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+// import ReactECharts from 'echarts-for-react';
 
 import NavBar from "@/layout/NavBar";
+import Footer from "@/components/generic/Footer";
 import Login from "@/components/user/Login";
 
 const geistSans = Geist({
@@ -31,13 +33,16 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider>
-        <FilterProvider>
-        <ThemeProvider>
-        <NavBar />
-        {children}
-        <ToastContainer position="top-center" autoClose={5000}/>
-        </ThemeProvider>
-        </FilterProvider>
+          <FilterProvider>
+            <ThemeProvider>
+              <NavBar />
+              {children}
+              <ToastContainer position="top-center" autoClose={5000} />
+              {/* // render echarts option. */}
+              {/* <ReactECharts option={this.getOption()} /> */}
+              <Footer />
+            </ThemeProvider>
+          </FilterProvider>
         </UserProvider>
       </body>
     </html>
