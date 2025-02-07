@@ -22,7 +22,9 @@ export default function PlanFrame({ sumOfAmount, setSumOfAmount }) {
 
   const fetchCategories = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/${section.toLowerCase()}/category?month=${selectedDate.getMonth()}&year=${selectedDate.getFullYear()}`
+      `${
+        process.env.NEXT_PUBLIC_API_URL
+      }/api/${section.toLowerCase()}/category?month=${selectedDate.getMonth()}&year=${selectedDate.getFullYear()}`
     );
     const data = await response.json();
 
