@@ -1,7 +1,7 @@
 // ACTUAL BREAKDOWN DATABASE (EXPENSE / INCOME)
 export async function getBreakdown(section, date) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}?start=${
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}?start=${
       date.start
     }&end=${date.end}`
   );
@@ -12,7 +12,7 @@ export async function getBreakdown(section, date) {
 
 export async function addBreakdown(section, body) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}`,
     {
       method: "POST",
       body: JSON.stringify(body),
@@ -26,7 +26,7 @@ export async function addBreakdown(section, body) {
 
 export async function deleteBreakdown(section, id) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}`,
     {
       method: "DELETE",
       body: JSON.stringify({
@@ -44,7 +44,7 @@ export async function deleteBreakdown(section, id) {
 export async function getCategories(section, date) {
   const response = await fetch(
     `${
-      process.env.API_URL
+      process.env.NEXT_PUBLIC_API_URL
     }/api/${section.toLowerCase()}/category?month=${date.getMonth()}&year=${date.getFullYear()}`
   );
   console.log("date: ", date);
@@ -57,7 +57,7 @@ export async function getCategories(section, date) {
 export async function addCategory(section, date) {
   const response = await fetch(
     `${
-      process.env.API_URL
+      process.env.NEXT_PUBLIC_API_URL
     }/api/${section.toLowerCase()}/category?month=${date.getMonth()}&year=${date.getFullYear()}`,
     {
       method: "POST",
@@ -71,7 +71,7 @@ export async function addCategory(section, date) {
 
 export async function addSubCategory(section, id) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}/category`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}/category`,
     {
       method: "POST",
       body: JSON.stringify({
@@ -87,7 +87,7 @@ export async function addSubCategory(section, id) {
 
 export async function updatedCategory(section, id, updatedContent) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}/category`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}/category`,
     {
       method: "PUT",
       body: JSON.stringify({
@@ -103,7 +103,7 @@ export async function updatedCategory(section, id, updatedContent) {
 
 export async function deleteCategory(section, id) {
   const response = await fetch(
-    `${process.env.API_URL}/api/${section.toLowerCase()}/category`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}/category`,
     {
       method: "DELETE",
       body: JSON.stringify({
