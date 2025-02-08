@@ -1,12 +1,12 @@
-const { Password } = require('@mui/icons-material');
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true
-    }, Password: {
-        type: String,
-        required: true
-    }
-})
+  username: {
+    type: String,
+    required: true,
+  },
+  Password: {
+    type: String,
+    required: true,
+  },
+});
