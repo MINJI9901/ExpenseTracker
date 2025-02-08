@@ -1,10 +1,12 @@
 import dbConnection from "@/lib/dbConnect";
 import Expense from "@/models/expense";
+import ExpenseCategory from "@/models/expenseCategory";
 
 import { authenticateUser } from "@/app/login/actions";
 
 export async function GET(req) {
   await dbConnection();
+  console.log("Expense Database: ", Expense);
   const user = await authenticateUser();
 
   const startDate = req.nextUrl.searchParams.get("start");
