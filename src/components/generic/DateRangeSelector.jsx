@@ -16,8 +16,11 @@ export default function DateRangeSelector({
   const filters = useContext(FilterContext);
   const { selectedDate } = filters;
 
+  const today = new Date();
+
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
+  // Set default date range
   const defaultStartDate = new Date(
     selectedDate.getFullYear(),
     selectedDate.getMonth(),
@@ -77,7 +80,7 @@ export default function DateRangeSelector({
             defaultValue={dayjs(defaultStartDate)}
             value={dayjs(dateRangeState.start)}
             minDate={dayjs("2024-01-01")}
-            maxDate={dayjs(new Date())}
+            maxDate={dayjs(today)}
             slotProps={{
               textField: {
                 variant: "standard",
@@ -92,7 +95,7 @@ export default function DateRangeSelector({
             defaultValue={dayjs(defaultEndDate)}
             value={dayjs(dateRangeState.end)}
             minDate={dayjs("2024-01-01")}
-            maxDate={dayjs(new Date())}
+            maxDate={dayjs(today)}
             slotProps={{
               textField: {
                 variant: "standard",

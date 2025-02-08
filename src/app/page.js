@@ -35,10 +35,11 @@ export default function Home() {
   const [plannedAmount, setPlannedAmount] = useState({});
   const [usedAmount, setUsedAmount] = useState({});
   const [categories, setCategories] = useState([]);
+  const [dateDifference, setDateDifference] = useState(0);
 
-  const dateDifference = Math.floor(
-    Math.abs(dateRange.end - dateRange.start) / (1000 * 60 * 60 * 24)
-  );
+  // const dateDifference = Math.floor(
+  //   Math.abs(dateRange.end - dateRange.start) / (1000 * 60 * 60 * 24)
+  // );
 
   const getData = async () => {
     const expenseBreakdownData = await getBreakdown("expense", dateRange);
@@ -149,6 +150,13 @@ export default function Home() {
     section == "Expense"
       ? setCategories(expenseCategoryData.map((category) => category.category))
       : setCategories(incomeCategoryData.map((category) => category.category));
+
+    // Set dateDifference between set dates
+    setDateDifference(
+      Math.floor(
+        Math.abs(dateRange.end - dateRange.start) / (1000 * 60 * 60 * 24)
+      )
+    );
   };
 
   useEffect(() => {

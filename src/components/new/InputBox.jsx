@@ -34,6 +34,8 @@ export default function InputBox({
   const [date, setDate] = useState(selectedDate);
   const [isFilled, setIsFilled] = useState(false);
 
+  const today = new Date();
+
   // const minDate = new Date(date.getFullYear(), date.getMonth(), 1)
   // const maxDate = date.getMonth() === new Date().getMonth() ? new Date() : new Date(date.getFullYear(), date.getMonth() + 1, 0)
 
@@ -73,7 +75,7 @@ export default function InputBox({
               defaultValue={dayjs(date)}
               value={dayjs(date)}
               minDate={dayjs("2024-01-01")}
-              maxDate={dayjs(new Date())}
+              maxDate={dayjs(today)}
               slotProps={{ textField: { fullWidth: true, my: "0.5rem" } }}
               onChange={handleDatePicking}
             />
