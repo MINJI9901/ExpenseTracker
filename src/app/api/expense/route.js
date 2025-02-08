@@ -57,36 +57,3 @@ export async function DELETE(req) {
 
   return Response.json(deleteExpense, { status: 200 });
 }
-
-// if (searchParams.get('month')) {
-//     const month = parseInt(searchParams.get("month"));
-//     const year = parseInt(searchParams.get("year"));
-
-//     const newCategory = new ExpenseCategory({
-//         category: '',
-//         sub_category: [{
-//             name: '',
-//             budget: 0,
-//         }],
-//         // date: new Date(`${year}-${parseInt(month) + 1}-15`)
-//         date: new Date(year, month, 15)
-//     })
-//     await newCategory.save();
-
-//     return Response.json(newCategory);
-
-// } else {
-//     const { id } = await req.json();
-//     const newSubCategory = await ExpenseCategory.findByIdAndUpdate(id,
-//         {
-//             $push: {
-//                 sub_category:
-//                 {
-//                     name: '',
-//                     budget: 0,
-//                 }
-//             }
-//         })
-
-//     return Response.json(newSubCategory);
-// }
