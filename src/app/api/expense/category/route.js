@@ -77,7 +77,7 @@ export async function POST(req) {
   // const categoryData = await ExpenseCategory.find({});
 }
 
-export async function PUT(req) {
+export async function PATCH(req) {
   await dbConnection();
 
   const { id, content } = await req.json();
@@ -102,6 +102,18 @@ export async function PUT(req) {
   }
 
   return Response.json(updatedCategory, { status: 200 });
+}
+
+export async function PUT(req) {
+  await dbConnection();
+
+  const newData = await req.json();
+
+  console.log("newData: ", newData);
+
+  const data = await ExpenseCategory.insertMany(newData);
+
+  return Response.json(data, { status: 200 });
 }
 
 export async function DELETE(req) {

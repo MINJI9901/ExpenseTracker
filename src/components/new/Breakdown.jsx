@@ -1,5 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
+
+// Import Context
 import { FilterContext } from "@/context/filterContext";
+import { ColorContext } from "@/context/ColorContext";
 
 import {
   Box,
@@ -27,11 +30,20 @@ import { Cancel } from "@mui/icons-material";
 
 import CategorySelectBox from "./CategorySelectBox";
 
-export default function Breakdown({ getBreakdownData, breakdown, isNew }) {
+export default function Breakdown({
+  getBreakdownData,
+  breakdown,
+  categoryData,
+  handleFilter,
+  isNew,
+}) {
   const { section } = useContext(FilterContext);
+  const colorPalette = useContext(ColorContext);
+
   const theme = useTheme().palette;
   const box = useRef(null);
   const editBox = useRef(null);
+
   // STATE FOR EDIT
   // const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [editedBreakdown, setEditedBreakdown] = useState(breakdown);
@@ -42,24 +54,18 @@ export default function Breakdown({ getBreakdownData, breakdown, isNew }) {
   const day = new Date(date).getDate();
 
   useEffect(() => {
-    // console.log('is new?: ', isNew)
-    // console.log('ref: ', box.current.style)
+    // Highlight newly added breakdown
     if (isNew) {
       box.current.style.backgroundColor = theme.primary.dark;
       setTimeout(() => {
         box.current.style.backgroundColor = "white";
         box.current.style.transition = "background-color 500ms linear";
       }, 500);
-      // console.log('new one is: ', box.current)
-      // console.log(box.current.style.backgroundColor)
     }
   }, [breakdown]);
 
   const handleDeleteItem = async () => {
-    console.log("breakdown: ", breakdown);
-    console.log("id: ", _id);
     const data = await deleteBreakdown(section, _id);
-    console.log(data);
     getBreakdownData();
   };
 
@@ -130,7 +136,9 @@ export default function Breakdown({ getBreakdownData, breakdown, isNew }) {
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
+            color: colorPalette[0],
           }}
+          onClick={() => handleFilter(category.category)}
         >
           {category.category}
         </Typography>
@@ -159,20 +167,82 @@ export default function Breakdown({ getBreakdownData, breakdown, isNew }) {
           | <DeleteOutlineIcon onClick={handleDeleteItem} />
         </Typography>
       </Box>
-      {/* <Box display={'none'} ref={editBox}>
-                <Box sx={{display: 'flex', justifyContent: 'space-evenly', textAlign: 'center', borderRadius: '5px', bgcolor: '#f2ece9', padding: '0.5rem', margin: '0.3rem'}} ref={box}> */}
-      {/* <TextField variant="standard" name="date" value={editedBreakdown.date.split('T')[0]} sx={{width: '10%', overflowX: 'auto', color: 'gray'}} onChange={handleEditInput}/>|
-                    <TextField variant="standard" name="name" value={editedBreakdown.name} sx={{width: '20%', overflowX: 'auto', color: 'gray', textAlign: 'center'}} onChange={handleEditInput}/>|
-                    <TextField variant="standard" name="amount" value={editedBreakdown.amount} sx={{width: '10%', overflowX: 'auto', color: 'gray'}} onChange={handleEditInput}/>|
-                    <TextField variant="standard" select name="category" value={editedBreakdown.category.category} sx={{width: '20%', overflowX: 'auto', color: 'gray'}} onChange={handleEditInput}>
-                    </TextField>|
-                    <TextField variant="standard" select name="sub_category" value={editedBreakdown.sub_category.name} sx={{width: '20%', overflowX: 'auto', color: 'gray'}} onChange={handleEditInput}>
-                    </TextField>|
-                    <Typography sx={{width: '10%', overflowX: 'auto'}}>
-                        <CheckCircleOutlineIcon />
-                    </Typography> */}
-      {/* </Box>
-            </Box> */}
+      <Box display={"none"} ref={editBox}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            textAlign: "center",
+            borderRadius: "5px",
+            bgcolor: "#f2ece9",
+            padding: "0.5rem",
+            margin: "0.3rem",
+          }}
+          ref={box}
+        >
+          <Typography
+            sx={{
+              width: { xs: "10rem", md: "10%" },
+              my: "auto",
+              mx: { xs: "1rem", md: 0 },
+              overflowX: "auto",
+              textWrap: "nowrap",
+            }}
+          >
+            {month < 10 ? `0${month}` : month}.{day < 10 ? `0${day}` : day}
+          </Typography>
+          |
+          <TextField
+            variant="standard"
+            name="name"
+            value={editedBreakdown.name}
+            sx={{
+              width: "20%",
+              overflowX: "auto",
+              color: "gray",
+              textAlign: "center",
+            }}
+            onChange={handleEditInput}
+          />
+          |
+          <TextField
+            variant="standard"
+            name="amount"
+            value={editedBreakdown.amount}
+            sx={{ width: "10%", overflowX: "auto", color: "gray" }}
+            onChange={handleEditInput}
+          />
+          |
+          <Box sx={{ width: "40%", overflowX: "auto", color: "gray" }}>
+            <CategorySelectBox
+              categoryData={categoryData}
+              setNewBreakdown={setEditedBreakdown}
+              isSubmitted={false}
+            ></CategorySelectBox>
+          </Box>
+          {/* <TextField
+            variant="standard"
+            select
+            name="category"
+            value={editedBreakdown.category.category}
+            sx={{ width: "20%", overflowX: "auto", color: "gray" }}
+            onChange={handleEditInput}
+          ></TextField>
+          |
+          <TextField
+            variant="standard"
+            select
+            name="sub_category"
+            value={editedBreakdown.sub_category.name}
+            sx={{ width: "20%", overflowX: "auto", color: "gray" }}
+            onChange={handleEditInput}
+          ></TextField> */}
+          |
+          <Typography sx={{ width: "10%", overflowX: "auto" }}>
+            <CheckCircleOutlineIcon />
+          </Typography>
+        </Box>
+      </Box>
     </>
   );
 }

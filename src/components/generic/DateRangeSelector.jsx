@@ -1,5 +1,5 @@
 "use client";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -8,9 +8,12 @@ import { FilterContext } from "@/context/filterContext";
 import { Typography, useTheme } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
+const now = new Date();
+
 export default function DateRangeSelector({
   dateRangeState,
   setDateRangeState,
+  getData,
 }) {
   const { palette } = useTheme();
   const filters = useContext(FilterContext);
@@ -21,19 +24,26 @@ export default function DateRangeSelector({
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   // Set default date range
-  const defaultStartDate = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth(),
-    1
-  );
-  const defaultEndDate =
-    selectedDate.getMonth() === new Date().getMonth()
-      ? new Date()
-      : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+  //   const defaultStartDate = new Date(
+  //     selectedDate.getFullYear(),
+  //     selectedDate.getMonth(),
+  //     1
+  //   );
+  //   const defaultEndDate =
+  //     selectedDate.getMonth() === new Date().getMonth()
+  //       ? new Date()
+  //       : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+  const defaultStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  const defaultEndDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-  useEffect(() => {
-    setDateRangeState({ start: defaultStartDate, end: defaultEndDate });
-  }, [selectedDate]);
+  //   dateRangeState = useMemo(
+  //     () => ({ start: defaultStartDate, end: defaultEndDate }),
+  //     [selectedDate]
+  //   );
+
+  //   useEffect(() => {
+  //     setDateRangeState({ start: defaultStartDate, end: defaultEndDate });
+  //   }, []);
 
   const handleStartDate = (e) => {
     setDateRangeState((prev) => ({ ...prev, start: e.$d }));

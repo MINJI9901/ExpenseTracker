@@ -22,7 +22,7 @@ const month = [
 ];
 const currentMonth = month[new Date().getMonth()];
 
-const pages = [currentMonth, "Expense"];
+const pages = [currentMonth, "Page", "Expense"];
 
 export const FilterProvider = ({ children }) => {
   const [menu, setMenu] = useState(pages);
@@ -32,7 +32,7 @@ export const FilterProvider = ({ children }) => {
   return (
     <FilterContext.Provider
       value={{
-        section: menu[1],
+        section: menu[2],
         category,
         setCategory,
         menu,

@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 
 import { Box, Typography } from "@mui/material";
+
+// Import ColorContext
+import { ColorContext } from "@/context/ColorContext";
 
 // Import the echarts core module, which provides the necessary interfaces for using echarts.
 import * as echarts from "echarts/core";
@@ -39,43 +42,12 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-// const option = {
-//     title: {
-//         show: true,
-//         text: 'example',
-//         top: 'center',
-//         left: 'center',
-//     },
-//     tooltip: {
-//             trigger: "item",
-//         },
-// 	series: [
-// 	    {
-//             data: [
-//                 {value: 50, name: 'minsoon'},
-//                 {value: 40, name: 'tosoon'},
-//                 {value: 10, name: 'human'}
-//             ],
-//             type: 'pie',
-//             radius: ['50%', '70%'],
-//             label: {
-//                 show: true,
-//                 // position: "inside",
-//                 color: 'black',
-//                 textBorderWidth: 1,
-//                 textBorderColor: 'white'
-//                 // backgroundColor: 'gray'
-//             },
-//             color: ['#002e2c', '#80c8d9', '#c7e8b3', '#ebdae1', '#FFE6C9', '#C5BAFF',  '#FFFBCA', '#A35C7A', '#D0DDD0', '#F5EFFF', '009990']
-// 	    }
-// 	],
-// }
-
 export default function Echart({
   title = "title",
   standardData,
   comparedData,
 }) {
+  const colorPalette = useContext(ColorContext);
   const chartRef = useRef();
   // const [options, setOptions] = useState(option);
 
@@ -142,19 +114,7 @@ export default function Echart({
           textBorderColor: "white",
           // backgroundColor: 'gray'
         },
-        color: [
-          "#002e2c",
-          "#80c8d9",
-          "#c7e8b3",
-          "#ebdae1",
-          "#FFE6C9",
-          "#C5BAFF",
-          "#FFFBCA",
-          "#A35C7A",
-          "#D0DDD0",
-          "#F5EFFF",
-          "009990",
-        ],
+        color: colorPalette,
       },
     ],
     grid: {
@@ -163,13 +123,6 @@ export default function Echart({
       top: "center",
     },
   };
-
-  // useEffect(() => {
-  //     if (chartRef) {
-  //         const pieChart = echarts.init(chartRef.current);
-  //         pieChart.setOption(options)
-  //     }
-  // }, [chartRef, options])
 
   return (
     <Box ref={chartRef} width={"25rem"} height={"20rem"} mx={"auto"}>

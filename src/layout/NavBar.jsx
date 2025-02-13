@@ -54,13 +54,14 @@ const month = [
   "Nov",
   "Dec",
 ];
-const currentMonth = month[new Date().getMonth()];
-const currentYear = new Date().getFullYear();
 
 // for DESKTOP MENU
 const pageMenu = {
+  Page: ["Summary", "Add New", "Plan"],
   Expense: ["Expense", "Income", "Asset"],
 };
+
+const pageLink = { Summary: "/", "Add New": "/new", Plan: "/plan" };
 
 let selectedMonth;
 let selectedYear;
@@ -153,7 +154,7 @@ export default function NavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ mb: "0.5rem" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Image src={logo} alt="Logo Image" />
@@ -279,6 +280,8 @@ export default function NavBar() {
                     menuItems[page].map((menu) => (
                       <MenuItem
                         key={menu}
+                        component="a"
+                        href={pageLink[menu]}
                         onClick={(e) => clickMenuItem(e, page)}
                       >
                         <Typography sx={{ textAlign: "center" }}>

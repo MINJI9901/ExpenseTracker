@@ -89,12 +89,22 @@ export async function updatedCategory(section, id, updatedContent) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}/category`,
     {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify({
         id: id,
         content: updatedContent,
       }),
     }
+  );
+
+  const data = await response.json();
+  return data;
+}
+
+export async function addPastData(section, newData) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}/category`,
+    { method: "PUT", body: JSON.stringify(newData) }
   );
 
   const data = await response.json();

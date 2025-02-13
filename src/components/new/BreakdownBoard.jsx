@@ -11,10 +11,33 @@ export default function BreakdownBoard({
   getBreakdownData,
   breakdownData,
   newBreakdownData,
+  categoryData,
 }) {
   const filters = useContext(FilterContext);
-  const { category, section, selectedDate } = filters;
-  const theme = useTheme();
+  const { section, selectedDate } = filters;
+  const { palette } = useTheme();
+
+  //   const [category, setCategory] = useState(null);
+  const [toggleCategory, setToggleCategory] = useState(false);
+  const [displayedData, setDisplayedData] = useState(() => [...breakdownData]);
+
+  useEffect(() => {
+    setDisplayedData(breakdownData);
+  }, [breakdownData]);
+
+  const handleFilter = (category) => {
+    if (toggleCategory) {
+      setDisplayedData(
+        breakdownData.filter(
+          (breakdown) => breakdown.category.category === category
+        )
+      );
+      setToggleCategory(false);
+    } else {
+      setDisplayedData(() => [...breakdownData]);
+      setToggleCategory(true);
+    }
+  };
 
   // const [dateRange, setDateRange] = useState({
   //     start: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
@@ -49,105 +72,127 @@ export default function BreakdownBoard({
   // }, [dateRange])
 
   return (
-    <Box>
-      {/* <DateRangeSelector dateRangeState={dateRange} setDateRangeState={setDateRange}/> */}
+    <Box
+      sx={{
+        bgcolor: palette.primary.main,
+        height: "30rem",
+        padding: "0.5rem",
+        my: "1rem",
+      }}
+    >
       <Box
         sx={{
-          bgcolor: theme.palette.primary.main,
-          height: "30rem",
-          padding: "0.5rem",
-          my: "1rem",
+          display: "flex",
+          justifyContent: "space-evenly",
+          textAlign: "center",
+          borderRadius: "5px",
+          color: "gray",
+          padding: "0.2rem",
         }}
       >
-        <Box
+        <Typography
           sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            textAlign: "center",
-            borderRadius: "5px",
-            color: "gray",
-            padding: "0.2rem",
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "10%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "10%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Date
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "20%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Name
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "10%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Amount
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "20%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Category
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "20%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Sub-category
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: "smaller",
-              width: { xs: "5rem", md: "10%" },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            Modify
-          </Typography>
-        </Box>
-        <Box sx={{ overflowY: "auto", height: "90%" }}>
-          {breakdownData.map((breakdown) =>
-            newBreakdownData && newBreakdownData._id === breakdown._id ? (
-              <Breakdown
-                key={breakdown._id}
-                breakdown={breakdown}
-                getBreakdownData={getBreakdownData}
-                isNew={true}
-              ></Breakdown>
-            ) : (
-              <Breakdown
-                key={breakdown._id}
-                breakdown={breakdown}
-                getBreakdownData={getBreakdownData}
-              ></Breakdown>
-            )
-          )}
-        </Box>
+          Date
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "20%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          Name
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "10%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          Amount
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "20%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          Category
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "20%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          Sub-category
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "smaller",
+            width: { xs: "5rem", md: "10%" },
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          Modify
+        </Typography>
+      </Box>
+      <Box sx={{ overflowY: "auto", height: "83%" }}>
+        {displayedData.map((breakdown) =>
+          newBreakdownData && newBreakdownData._id === breakdown._id ? (
+            <Breakdown
+              key={breakdown._id}
+              breakdown={breakdown}
+              getBreakdownData={getBreakdownData}
+              categoryData={categoryData}
+              handleFilter={handleFilter}
+              isNew={true}
+            ></Breakdown>
+          ) : (
+            <Breakdown
+              key={breakdown._id}
+              breakdown={breakdown}
+              getBreakdownData={getBreakdownData}
+              categoryData={categoryData}
+              handleFilter={handleFilter}
+            ></Breakdown>
+          )
+        )}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "end",
+          borderRadius: "5px",
+          color: "white",
+          bgcolor: palette.grey[700],
+          padding: "0.5rem 3rem",
+          margin: "0.3rem",
+        }}
+      >
+        <Typography mx={"2rem"} fontSize={"1rem"} fontWeight={700}>
+          Total
+        </Typography>
+        <Typography fontSize={"1rem"} fontWeight={700}>
+          ${" "}
+          {displayedData
+            .reduce((prev, curr) => prev + curr.amount, 0)
+            .toLocaleString("en", { maximumFractionDigits: 2 })}
+        </Typography>
       </Box>
     </Box>
   );

@@ -5,36 +5,35 @@ import { useState, useContext, useEffect } from "react";
 import { Box, Grid2, Button, useTheme } from "@mui/material";
 
 import { FilterContext } from "@/context/filterContext";
-import { getCategories } from "@/app/actions";
+// import { getCategories } from "@/app/actions";
 
 import InputBox from "./InputBox";
 import CategorySelectBox from "./CategorySelectBox";
 import { addBreakdown } from "@/app/actions";
 
-export default function FormContainer({ getBreakdownData }) {
+export default function FormContainer({ getBreakdownData, categoryData }) {
   const { palette } = useTheme();
   const filters = useContext(FilterContext);
-  const { section, selectedDate, setSelectedDate } = filters;
+  const { section } = filters;
 
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  //   const [categories, setCategories] = useState([]);
   const [newBreakdown, setNewBreakdown] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false); // TO VALIDATE FORM WHEN IT'S SUBMITTED
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getCategoryData = async () => {
-      const data = await getCategories(section, selectedDate);
+  //   useEffect(() => {
+  //     const getCategoryData = async () => {
+  //       const data = await getCategories(section, selectedDate);
+  //       setCategories(data);
+  //     };
 
-      setCategories(data);
-    };
+  //     getCategoryData();
 
-    getCategoryData();
-
-    setLoading(false);
-    console.log("selected date: ", selectedDate);
-    // TO UPDATE CATEGORY DEPENDING ON SECTION AND MONTH CHANGES
-  }, [section, selectedDate.getMonth()]);
+  //     setLoading(false);
+  //     console.log("selected date: ", selectedDate);
+  //     // TO UPDATE CATEGORY DEPENDING ON SECTION AND MONTH CHANGES
+  //   }, [section, selectedDate.getMonth()]);
 
   const handleSubmit = async (e) => {
     if (e.target.checkValidity()) {
@@ -53,7 +52,7 @@ export default function FormContainer({ getBreakdownData }) {
     setIsFormOpen(!isFormOpen);
   };
 
-  if (loading) return <div>loading...</div>;
+  // if (loading) return <div>loading...</div>;
 
   return (
     <>
@@ -93,7 +92,7 @@ export default function FormContainer({ getBreakdownData }) {
         />
         <CategorySelectBox
           label="Category"
-          categoryData={categories}
+          categoryData={categoryData}
           setNewBreakdown={setNewBreakdown}
           isSubmitted={isSubmitted}
         />
@@ -108,6 +107,14 @@ export default function FormContainer({ getBreakdownData }) {
             fontSize: "large",
             fontWeight: "700",
             margin: "2rem auto",
+            "&:hover": {
+              bgcolor: palette.primary.main,
+              color: "orange",
+              border: "1px solid orange",
+              "&:active": {
+                boxShadow: "0 0 5px",
+              },
+            },
           }}
         >
           Save

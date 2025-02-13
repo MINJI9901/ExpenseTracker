@@ -61,13 +61,19 @@ export default function CategorySelectBox({
         sx={{ my: "0.5rem" }}
         onChange={handleSetCategory}
       >
-        {categoryData.map((option) => (
-          <MenuItem key={option._id} value={option.category}>
-            {option.category}
-          </MenuItem>
-        ))}
+        {categoryData.length ? (
+          categoryData.map((option) => (
+            <MenuItem key={option._id} value={option.category}>
+              {option.category}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem></MenuItem>
+        )}
       </TextField>
       <TextField
+        error={isSubmitted && !isSelected ? true : false}
+        required
         fullWidth
         select={true}
         value={subCategory.length ? subCategory[0].name : ""}
@@ -77,17 +83,19 @@ export default function CategorySelectBox({
         sx={{ my: "0.5rem" }}
         onChange={handleSetSubCategory}
       >
-        {category.length
-          ? category[0].sub_category.map((option) =>
-              option.name === "" ? (
-                ""
-              ) : (
-                <MenuItem key={option._id} value={option.name}>
-                  {option.name}
-                </MenuItem>
-              )
+        {category.length ? (
+          category[0].sub_category.map((option) =>
+            option.name === "" ? (
+              ""
+            ) : (
+              <MenuItem key={option._id} value={option.name}>
+                {option.name}
+              </MenuItem>
             )
-          : []}
+          )
+        ) : (
+          <MenuItem></MenuItem>
+        )}
       </TextField>
     </>
   );

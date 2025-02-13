@@ -177,7 +177,7 @@ export default function CategoryCard({ categoryData, fetchCategories }) {
             onClick={handleAddSubCategory}
           >
             <AddIcon size="sm"></AddIcon>
-            Add New Specific
+            Add New Sub-category
           </Button>
         </Box>
       </Box>

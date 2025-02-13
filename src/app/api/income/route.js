@@ -1,5 +1,6 @@
 import dbConnection from "@/lib/dbConnect";
 import Income from "@/models/income";
+import IncomeCategory from "@/models/incomeCategory";
 
 import { authenticateUser } from "@/app/login/actions";
 

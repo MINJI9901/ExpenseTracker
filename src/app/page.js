@@ -15,8 +15,13 @@ import SummaryBox from "@/components/main/SummaryBox";
 
 import { FilterContext } from "@/context/filterContext";
 
+const now = new Date();
+
 export default function Home() {
+  console.log("renders");
   const { section, selectedDate, category } = useContext(FilterContext);
+
+  const isExpense = section == "Expense";
 
   let expenseSum = 0;
   let incomeSum = 0;
@@ -25,12 +30,10 @@ export default function Home() {
   let usedAmountPerCategory = {};
 
   const [dateRange, setDateRange] = useState({
-    start: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-    end:
-      selectedDate.getMonth() === new Date().getMonth()
-        ? new Date()
-        : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
+    start: new Date(now.getFullYear(), now.getMonth(), 1),
+    end: new Date(),
   });
+
   const [sumOfMoney, setSumOfMoney] = useState({ expenseSum: 0, incomeSum: 0 });
   const [plannedAmount, setPlannedAmount] = useState({});
   const [usedAmount, setUsedAmount] = useState({});
@@ -47,36 +50,40 @@ export default function Home() {
     const expenseCategoryData = await getCategories("expense", dateRange.start);
     const incomeCategoryData = await getCategories("income", dateRange.start);
 
-    // Set the total actual amount for dateRange
+    // Set the total actual amount for the dateRange
     if (expenseBreakdownData.length) {
-      category !== "all"
-        ? expenseBreakdownData.forEach((expense) =>
-            expense.category.category === category
-              ? (expenseSum += expense.amount)
-              : ""
-          )
-        : expenseBreakdownData.forEach(
-            (expense) => (expenseSum += expense.amount)
-          );
+      if (category !== "all") {
+        expenseBreakdownData.forEach((expense) =>
+          expense.category.category === category
+            ? (expenseSum += expense.amount)
+            : ""
+        );
+      } else {
+        expenseBreakdownData.forEach(
+          (expense) => (expenseSum += expense.amount)
+        );
+      }
     }
     if (incomeBreakdownData.length) {
-      category !== "all"
-        ? incomeBreakdownData.forEach((income) =>
-            income.category.category === category
-              ? (incomeSum += income.amount)
-              : ""
-          )
-        : incomeBreakdownData.forEach((income) => (incomeSum += income.amount));
+      if (category !== "all") {
+        incomeBreakdownData.forEach((income) =>
+          income.category.category === category
+            ? (incomeSum += income.amount)
+            : ""
+        );
+      } else {
+        incomeBreakdownData.forEach((income) => (incomeSum += income.amount));
+      }
     }
 
+    // Set each total sum into state
     setSumOfMoney({ expenseSum: expenseSum, incomeSum: incomeSum });
 
-    console.log("sumofmoney: ", sumOfMoney);
-
-    // Set each planned amount and actual amount as objects with key-value pairs of category-amount
-    if (section == "Expense") {
+    // Set each planned amount and actual amount in objects with key-value pairs of category-amount
+    if (isExpense) {
       category !== "all"
-        ? expenseCategoryData
+        ? // If specific category is selected
+          expenseCategoryData
             .filter((cate) => cate.category === category)[0]
             .sub_category.forEach((sub) => {
               // Calculate planned amount
@@ -89,9 +96,8 @@ export default function Home() {
                 0
               );
             })
-        : expenseCategoryData.forEach((category) => {
-            console.log("when category is all~~!!");
-
+        : // If specific category is not set
+          expenseCategoryData.forEach((category) => {
             // Calculate planned amount
             plannedAmountPerCategory[category.category] =
               category.sub_category.reduce(
@@ -109,7 +115,8 @@ export default function Home() {
           });
     } else {
       category !== "all"
-        ? incomeCategoryData
+        ? // If specific category is selected
+          incomeCategoryData
             .filter((cate) => cate.category === category)[0]
             .sub_category.forEach((sub) => {
               // Calculate planned amount
@@ -122,7 +129,8 @@ export default function Home() {
                 0
               );
             })
-        : incomeCategoryData.forEach((category) => {
+        : // If specific category is not set
+          incomeCategoryData.forEach((category) => {
             // Calculate planned amount
             plannedAmountPerCategory[category.category] =
               category.sub_category.reduce(
@@ -140,30 +148,19 @@ export default function Home() {
           });
     }
 
+    // Set each comparing values into states
     setPlannedAmount(plannedAmountPerCategory);
     setUsedAmount(usedAmountPerCategory);
 
-    console.log("planned amount: ", plannedAmountPerCategory);
-    console.log("used amount: ", usedAmountPerCategory);
-
     // Set categories state for category menu
-    section == "Expense"
+    isExpense
       ? setCategories(expenseCategoryData.map((category) => category.category))
       : setCategories(incomeCategoryData.map((category) => category.category));
-
-    // Set dateDifference between set dates
-    // setDateDifference(
-    //   Math.floor(
-    //     Math.abs(dateRange.end - dateRange.start) / (1000 * 60 * 60 * 24)
-    //   )
-    // );
   };
 
   useEffect(() => {
     getData();
-  }, [dateRange, selectedDate, section, category]);
-
-  const isExpense = section == "Expense";
+  }, [dateRange, section, category]);
 
   return (
     <>
@@ -221,14 +218,14 @@ export default function Home() {
           <SummaryBox
             data={[
               {
-                label: section == "Expense" ? "Budget" : "Expected Amount",
+                label: isExpense ? "Budget" : "Expected Amount",
                 amount: Object.values(plannedAmount).reduce(
                   (prev, curr) => prev + curr,
                   0
                 ),
               },
               {
-                label: section == "Expense" ? "Spending" : "Earning",
+                label: isExpense ? "Spending" : "Earning",
                 amount: Object.values(usedAmount).reduce(
                   (prev, curr) => prev + curr,
                   0

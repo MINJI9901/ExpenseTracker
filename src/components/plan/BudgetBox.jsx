@@ -126,10 +126,12 @@ export default function BudgetBox({
             ></Input>
           </Box>
         ) : (
-          (section === "Expense"
+          `$
+          ${(section === "Expense"
             ? subCategoryData.budget || 0
             : subCategoryData.expected_amount || 0
-          ).toLocaleString("en", { maximumFractionDigits: 2 })
+          ).toLocaleString("en", { maximumFractionDigits: 2 })}
+        `
         )}
       </Typography>
     </Card>

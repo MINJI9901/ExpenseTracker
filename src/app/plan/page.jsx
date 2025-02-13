@@ -1,18 +1,32 @@
 "use client";
-import SumBoard from "@/components/generic/SumBoard";
-import PlanFrame from "@/components/plan/PlanFrame";
-
 import { useState, useContext } from "react";
-import { Box, Container, Typography } from "@mui/material";
+
+import { Box, Button, Container, Typography, useTheme } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import { FilterContext } from "@/context/filterContext";
 
+import SumBoard from "@/components/generic/SumBoard";
+import PlanFrame from "@/components/plan/PlanFrame";
+import MonthPicker from "@/components/generic/MonthPicker";
+
 const Page = () => {
-  const [sumOfAmount, setSumOfAmount] = useState(0);
+  const { palette } = useTheme();
+
   const filters = useContext(FilterContext);
-  const { section, selectedDate } = filters;
-  const year = selectedDate.getFullYear();
-  const month = selectedDate.getMonth() + 1;
+  const { section } = filters;
+
+  const [monthlyDate, setMonthlyDate] = useState(new Date());
+
+  //   const year = monthlyDate.getFullYear();
+  //   const month = monthlyDate.getMonth() + 1;
+
+  const [sumOfAmount, setSumOfAmount] = useState(0);
 
   return (
     <>
@@ -25,10 +39,7 @@ const Page = () => {
         }}
       >
         <Container>
-          <CalendarMonthIcon></CalendarMonthIcon>
-          <Typography display="inline-block" margin="0.5rem">
-            {`${year}.${month < 10 ? `0${month}` : month}`}
-          </Typography>
+          <MonthPicker setMonthlyDate={setMonthlyDate} />
         </Container>
         <SumBoard
           text={`Entire ${section == "Expense" ? "Budget" : "Expected Income"}`}
@@ -36,7 +47,11 @@ const Page = () => {
         />
       </Box>
       <Box>
-        <PlanFrame sumOfAmount={sumOfAmount} setSumOfAmount={setSumOfAmount} />
+        <PlanFrame
+          monthlyDate={monthlyDate}
+          sumOfAmount={sumOfAmount}
+          setSumOfAmount={setSumOfAmount}
+        />
       </Box>
       {/* <Box margin={'2rem 0'}>
                 <PlanFrame sumOfAmount={sumOfAmount} setSumOfAmount={setSumOfAmount}/>
