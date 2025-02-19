@@ -9,6 +9,7 @@ import { authenticateUser } from "@/app/login/actions";
 export async function GET(req) {
   await dbConnection();
   const user = await authenticateUser();
+  console.log("user in GET: ", user);
 
   // const reqUrl = req.url;
   // const { searchParams } = new URL(reqUrl);
@@ -26,7 +27,7 @@ export async function GET(req) {
       $gte: startOfMonth,
       $lt: endOfMonth,
     },
-    user_id: user.id,
+    user_id: user ? user.id : null,
   });
 
   return Response.json(categoryData);

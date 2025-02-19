@@ -3,6 +3,7 @@ import Expense from "@/models/expense";
 import ExpenseCategory from "@/models/expenseCategory";
 
 import { authenticateUser } from "@/app/login/actions";
+import expense from "@/models/expense";
 
 export async function GET(req) {
   await dbConnection();
@@ -35,19 +36,31 @@ export async function POST(req) {
     name: name,
     amount: amount,
     category: category[0],
+    sub_category: sub_category[0],
     date: date,
     user_id: user.id,
   });
 
   await newExpense.save();
 
-  if (sub_category.length) {
-    await Expense.findByIdAndUpdate(newExpense._id, {
-      sub_category: { ...sub_category[0] },
-    });
-  }
+  //   When "sub_category" is not required
+  //   if (sub_category.length) {
+  //     await Expense.findByIdAndUpdate(newExpense._id, {
+  //       sub_category: { ...sub_category[0] },
+  //     });
+  //   }
 
   return Response.json(newExpense, { status: 200 });
+}
+
+export async function PATCH(req) {
+  await dbConnection();
+
+  const { content } = await req.json();
+
+  const updatedExpense = await expense.findByIdAndUpdate(content._id, content);
+
+  return Response.json(updatedExpense, { status: 200 });
 }
 
 export async function DELETE(req) {

@@ -11,7 +11,11 @@ import InputBox from "./InputBox";
 import CategorySelectBox from "./CategorySelectBox";
 import { addBreakdown } from "@/app/actions";
 
-export default function FormContainer({ getBreakdownData, categoryData }) {
+export default function FormContainer({
+  getBreakdownData,
+  categoryData,
+  dateRange,
+}) {
   const { palette } = useTheme();
   const filters = useContext(FilterContext);
   const { section } = filters;
@@ -96,7 +100,11 @@ export default function FormContainer({ getBreakdownData, categoryData }) {
           setNewBreakdown={setNewBreakdown}
           isSubmitted={isSubmitted}
         />
-        <InputBox needDatePicker={true} setNewBreakdown={setNewBreakdown} />
+        <InputBox
+          needDatePicker={true}
+          setNewBreakdown={setNewBreakdown}
+          dateRange={dateRange}
+        />
         <Button
           type="submit"
           fullWidth

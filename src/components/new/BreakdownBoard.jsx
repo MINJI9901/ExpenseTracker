@@ -13,18 +13,19 @@ export default function BreakdownBoard({
   newBreakdownData,
   categoryData,
 }) {
-  const filters = useContext(FilterContext);
-  const { section, selectedDate } = filters;
+  const { section, selectedDate } = useContext(FilterContext);
   const { palette } = useTheme();
 
   //   const [category, setCategory] = useState(null);
   const [toggleCategory, setToggleCategory] = useState(false);
+  //   State to filter by categories
   const [displayedData, setDisplayedData] = useState(() => [...breakdownData]);
 
   useEffect(() => {
-    setDisplayedData(breakdownData);
+    setDisplayedData([...breakdownData]);
   }, [breakdownData]);
 
+  //   Filter by category
   const handleFilter = (category) => {
     if (toggleCategory) {
       setDisplayedData(
@@ -177,6 +178,7 @@ export default function BreakdownBoard({
         sx={{
           display: "flex",
           justifyContent: "end",
+          border: "1px solid gray",
           borderRadius: "5px",
           color: "white",
           bgcolor: palette.grey[700],

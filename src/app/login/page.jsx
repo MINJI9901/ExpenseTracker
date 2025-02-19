@@ -13,7 +13,7 @@ export default async function LoginPage() {
   console.log("user: ", user);
 
   if (user) {
-    redirect("/private");
+    redirect("/");
   }
   return <Login />;
 }

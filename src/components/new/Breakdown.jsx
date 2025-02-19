@@ -7,7 +7,6 @@ import { ColorContext } from "@/context/ColorContext";
 import {
   Box,
   Button,
-  Input,
   MenuItem,
   TextField,
   Typography,
@@ -21,7 +20,6 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 import dayjs from "dayjs";
 
@@ -29,6 +27,7 @@ import { deleteBreakdown } from "@/app/actions";
 import { Cancel } from "@mui/icons-material";
 
 import CategorySelectBox from "./CategorySelectBox";
+import EditBreakdown from "./EditBreakdown";
 
 export default function Breakdown({
   getBreakdownData,
@@ -42,11 +41,9 @@ export default function Breakdown({
 
   const theme = useTheme().palette;
   const box = useRef(null);
-  const editBox = useRef(null);
 
   // STATE FOR EDIT
-  // const [isBeingEdited, setIsBeingEdited] = useState(false);
-  const [editedBreakdown, setEditedBreakdown] = useState(breakdown);
+  const [edit, setEdit] = useState(false);
 
   const { _id, name, amount, category, sub_category, date } = breakdown;
 
@@ -70,13 +67,9 @@ export default function Breakdown({
   };
 
   const handleToggleEditForm = () => {
-    const display = editBox.current.style.display;
-    editBox.current.style.display = display === "none" ? "block" : "none";
-  };
-
-  const handleEditInput = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
+    edit ? setEdit(false) : setEdit(true);
+    // const display = editBox.current.style.display;
+    // editBox.current.style.display = display === "none" ? "block" : "none";
   };
 
   // const handleDatePicking = (e) => {
@@ -167,82 +160,13 @@ export default function Breakdown({
           | <DeleteOutlineIcon onClick={handleDeleteItem} />
         </Typography>
       </Box>
-      <Box display={"none"} ref={editBox}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            textAlign: "center",
-            borderRadius: "5px",
-            bgcolor: "#f2ece9",
-            padding: "0.5rem",
-            margin: "0.3rem",
-          }}
-          ref={box}
-        >
-          <Typography
-            sx={{
-              width: { xs: "10rem", md: "10%" },
-              my: "auto",
-              mx: { xs: "1rem", md: 0 },
-              overflowX: "auto",
-              textWrap: "nowrap",
-            }}
-          >
-            {month < 10 ? `0${month}` : month}.{day < 10 ? `0${day}` : day}
-          </Typography>
-          |
-          <TextField
-            variant="standard"
-            name="name"
-            value={editedBreakdown.name}
-            sx={{
-              width: "20%",
-              overflowX: "auto",
-              color: "gray",
-              textAlign: "center",
-            }}
-            onChange={handleEditInput}
-          />
-          |
-          <TextField
-            variant="standard"
-            name="amount"
-            value={editedBreakdown.amount}
-            sx={{ width: "10%", overflowX: "auto", color: "gray" }}
-            onChange={handleEditInput}
-          />
-          |
-          <Box sx={{ width: "40%", overflowX: "auto", color: "gray" }}>
-            <CategorySelectBox
-              categoryData={categoryData}
-              setNewBreakdown={setEditedBreakdown}
-              isSubmitted={false}
-            ></CategorySelectBox>
-          </Box>
-          {/* <TextField
-            variant="standard"
-            select
-            name="category"
-            value={editedBreakdown.category.category}
-            sx={{ width: "20%", overflowX: "auto", color: "gray" }}
-            onChange={handleEditInput}
-          ></TextField>
-          |
-          <TextField
-            variant="standard"
-            select
-            name="sub_category"
-            value={editedBreakdown.sub_category.name}
-            sx={{ width: "20%", overflowX: "auto", color: "gray" }}
-            onChange={handleEditInput}
-          ></TextField> */}
-          |
-          <Typography sx={{ width: "10%", overflowX: "auto" }}>
-            <CheckCircleOutlineIcon />
-          </Typography>
-        </Box>
-      </Box>
+      <EditBreakdown
+        editState={edit}
+        setEdit={setEdit}
+        breakdown={breakdown}
+        categoryData={categoryData}
+        getBreakdownData={getBreakdownData}
+      />
     </>
   );
 }

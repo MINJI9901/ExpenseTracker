@@ -17,8 +17,6 @@ export async function GET(req) {
 
   const startOfMonth = new Date(year, month, 1, 9, 0, 0);
   const endOfMonth = new Date(year, month + 1, 1, 9, 0, 0);
-  console.log("start of month: ", startOfMonth);
-  console.log("end of month: ", endOfMonth);
 
   const categoryData = await IncomeCategory.find({
     date: {

@@ -9,6 +9,8 @@ import BreakdownBoard from "@/components/new/BreakdownBoard";
 import DateRangeSelector from "@/components/generic/DateRangeSelector";
 import { getBreakdown, getCategories } from "@/app/actions";
 
+import { createClient } from "@/utils/supabase/client";
+
 const now = new Date();
 
 const Page = () => {
@@ -31,21 +33,33 @@ const Page = () => {
     end: new Date(),
   });
 
+  const authenticateUser = async () => {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.getUser();
+    console.log("user data: ", data);
+
+    return data?.user || error;
+  };
+
   const getBreakdownData = async (isNewAdded) => {
-    const data = await getBreakdown(section, dateRange);
+    const user = await authenticateUser();
+    if (user) {
+      const data = await getBreakdown(section, dateRange);
 
-    console.log("breakdown data: ", data);
+      console.log("breakdown data: ", data);
 
-    // Set newly added breakdown if exists
-    if (isNewAdded) {
-      setNewBreakdownData(
-        data.find(
-          (item) => !breakdownData.map((item) => item._id).includes(item._id)
-        )
-      );
-    } else setNewBreakdownData({});
+      // Set newly added breakdown if exists
+      if (isNewAdded) {
+        setNewBreakdownData(
+          data.find(
+            (item) => !breakdownData.map((item) => item._id).includes(item._id)
+          )
+        );
+      } else setNewBreakdownData({});
 
-    setBreakdownData([...data]);
+      setBreakdownData([...data]);
+    }
   };
 
   const getCategoryData = async () => {
@@ -66,6 +80,7 @@ const Page = () => {
         <FormContainer
           getBreakdownData={getBreakdownData}
           categoryData={categoryData}
+          dateRange={dateRange}
         />
       </Grid2>
       <Grid2 size={{ xs: 12, md: 9 }}>

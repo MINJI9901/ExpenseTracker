@@ -1,20 +1,25 @@
 import mongoose from "mongoose";
 
 const ExpenseSchema = new mongoose.Schema({
-  name: String,
-  amount: Number,
-  category: { type: mongoose.Schema.Types.ObjectId, ref: "ExpenseCategory" },
+  name: { type: String, required: true },
+  amount: { type: Number, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ExpenseCategory",
+    required: true,
+  },
   sub_category: {
-    _id: String,
-    name: String,
-    budget: Number,
+    _id: { type: String, required: true },
+    name: { type: String, required: true },
+    budget: { type: Number, required: true },
   },
   date: {
     type: Date,
     default: Date.now,
+    required: true,
     // get: (date) => date.toLocaleDateString("en-US") // getter
   },
-  user_id: String,
+  user_id: { type: String, required: true },
 });
 
 // delete mongoose.models.Expense;

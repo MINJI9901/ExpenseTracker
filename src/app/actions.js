@@ -24,6 +24,22 @@ export async function addBreakdown(section, body) {
   return data;
 }
 
+export async function updateBreakdown(section, updatedContent) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        content: updatedContent,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  return data;
+}
+
 export async function deleteBreakdown(section, id) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/${section.toLowerCase()}`,

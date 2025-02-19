@@ -34,19 +34,31 @@ export async function POST(req) {
     name: name,
     amount: amount,
     category: category[0],
+    sub_category: sub_category[0],
     date: date,
     user_id: user.id,
   });
 
   await newIncome.save();
 
-  if (sub_category.length) {
-    await Income.findByIdAndUpdate(newIncome._id, {
-      sub_category: sub_category[0],
-    });
-  }
+  //   When "sub_category" is not required
+  //   if (sub_category.length) {
+  //     await Income.findByIdAndUpdate(newIncome._id, {
+  //       sub_category: sub_category[0],
+  //     });
+  //   }
 
   return Response.json(newIncome);
+}
+
+export async function PATCH(req) {
+  await dbConnection();
+
+  const { content } = await req.json();
+
+  const updatedIncome = await income.findByIdAndUpdate(content._id, content);
+
+  return Response.json(updatedIncome, { status: 200 });
 }
 
 export async function DELETE(req) {

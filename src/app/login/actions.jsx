@@ -9,14 +9,9 @@ export async function authenticateUser() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  // if (error || !data?.user) {
-  //     redirect('/login')
-  // }
-  // console.log('supabase: ', supabase)
-  // console.log('data: ', data)
-  // console.log('error: ', error)
+  console.log("user: ", data || error);
 
-  return data?.user || error;
+  return data?.user || null;
 }
 
 export async function login(formData) {

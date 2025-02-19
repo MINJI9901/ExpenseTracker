@@ -1,21 +1,24 @@
 import mongoose from "mongoose";
 
 const IncomeCategorySchema = new mongoose.Schema({
-  category: String,
+  category: { type: String, required: true },
   sub_category: [
     {
-      name: String,
+      name: { type: String, required: true },
       expected_amount: {
         type: Number,
         default: 0,
+        required: true,
       },
     },
   ],
   date: {
     type: Date,
+    default: Date.now,
+    required: true,
     // get: (date) => date.toLocaleDateString("en-US")
   },
-  user_id: String,
+  user_id: { type: String, required: true },
 });
 
 if (mongoose.models.IncomeCategory) {
