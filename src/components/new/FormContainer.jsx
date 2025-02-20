@@ -43,8 +43,6 @@ export default function FormContainer({
     if (e.target.checkValidity()) {
       e.preventDefault();
       await addBreakdown(section, newBreakdown);
-      // TO UPDATE DATE IN DISPLAYING SECTION CORRESPONDING TO NEW SELECTED DATE
-      setSelectedDate(newBreakdown.date);
       getBreakdownData(true);
     } else {
       e.preventDefault();

@@ -27,7 +27,7 @@ import logo from "../../public/img/orange_heart_favicon.ico";
 import { FilterContext, FilterProvider } from "@/context/filterContext";
 
 import { authenticateUser } from "@/app/login/actions";
-import { logout } from "@/app/login/actions";
+import { logout, login } from "@/app/login/actions";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -59,15 +59,10 @@ let selectedYear;
 // let selectedDate = Date.now();
 
 export default function NavBar() {
-  const theme = useTheme();
+  const { palette } = useTheme();
 
   const [user, setUser] = useState(null);
-  const [settings, setSettings] = useState([
-    "Profile",
-    "Account",
-    "Dashboard",
-    "Logout",
-  ]);
+  const [settings, setSettings] = useState(["Login/SignUp"]);
   const [anchorElNav, setAnchorElNav] = useState({});
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [menuItems, setMenuItems] = useState(pageMenu);
@@ -77,13 +72,6 @@ export default function NavBar() {
   // const { user, setUser } = useContext(UserContext);
 
   const checkUser = async () => {
-    console.log("hahahahahahahaha checkUser is working");
-    // const user = await authenticateUser();
-
-    // const supabase = await createClient();
-
-    // const { data, error } = await supabase.auth.getUser();
-
     try {
       const supabase = createClient();
 
@@ -126,7 +114,6 @@ export default function NavBar() {
   const handleCloseUserMenu = async (e) => {
     setAnchorElUser(null);
     const setting = e.target.innerText;
-    console.log("setting: ", setting);
     if (setting == "Logout") {
       const logoutUser = await logout();
       console.log("logoutUser: ", logoutUser);
@@ -250,7 +237,7 @@ export default function NavBar() {
                             <Button
                               onClick={() => handleDateSubmit(page)}
                               sx={{
-                                bgcolor: theme.palette.primary.main,
+                                bgcolor: palette.primary.main,
                                 color: "black",
                                 width: "100%",
                                 ml: "2rem",
@@ -285,7 +272,17 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src=""
+                  sx={{
+                    bgcolor: user
+                      ? palette.secondary.dark
+                      : palette.primary.dark,
+                  }}
+                >
+                  {user ? "" : "?"}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

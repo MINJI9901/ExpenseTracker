@@ -1,5 +1,6 @@
 "use client";
-import { login, signup } from "@/app/login/actions";
+import { useState } from "react";
+
 import {
   Box,
   Button,
@@ -11,11 +12,13 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { useState } from "react";
-
 import { ToastContainer, toast } from "react-toastify";
 
-const signUpNotify = () =>
+import { login, signup } from "@/app/login/actions";
+
+const signUpNotify = (e) => {
+  e.preventDefault();
+
   toast(
     <ToastMsg
       title={"Check Your Email!"}
@@ -23,12 +26,21 @@ const signUpNotify = () =>
     />,
     { hideProgressBar: true }
   );
+};
 
-const loginNotify = async () => {
-  const isLogined = await login();
-  console.log("isLogined: ", isLogined);
+const loginNotify = async (e) => {
+  e.preventDefault();
+
+  const form = e.target.closest("form"); // Get the closest form element
+  //   console.log("closest form: ", form);
+  if (!form) return;
+
+  const formData = new FormData(form);
+  //   console.log("formData: ", formData);
+  const isLogined = await login(formData);
+  //   console.log("After login call, isLogined:", isLogined);
+
   if (!isLogined) {
-    console.log("isLogined: ", isLogined);
     return toast(
       <ToastMsg
         title={"Failed To Login"}
@@ -133,8 +145,10 @@ export default function Login() {
         <Button
           component="button"
           type="submit"
-          formAction={login}
-          onClick={loginNotify}
+          //   formAction={login}
+          onClick={async (e) => {
+            await loginNotify(e);
+          }}
           fullWidth
           sx={{
             bgcolor: palette.secondary.main,

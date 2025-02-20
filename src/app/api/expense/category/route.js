@@ -47,10 +47,10 @@ export async function POST(req) {
     const year = parseInt(req.nextUrl.searchParams.get("year"));
 
     const newCategory = new ExpenseCategory({
-      category: "",
+      category: " ",
       sub_category: [
         {
-          name: "",
+          name: " ",
           budget: 0,
         },
       ],
