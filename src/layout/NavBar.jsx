@@ -24,7 +24,8 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Image from "next/image";
 import logo from "../../public/img/orange_heart_favicon.ico";
 
-import { FilterContext, FilterProvider } from "@/context/filterContext";
+import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
 
 import { authenticateUser } from "@/app/login/actions";
 import { logout, login } from "@/app/login/actions";
@@ -61,7 +62,7 @@ let selectedYear;
 export default function NavBar() {
   const { palette } = useTheme();
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [settings, setSettings] = useState(["Login/SignUp"]);
   const [anchorElNav, setAnchorElNav] = useState({});
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -69,7 +70,7 @@ export default function NavBar() {
 
   const { menu, setMenu, selectedDate, setSelectedDate } =
     useContext(FilterContext);
-  // const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const checkUser = async () => {
     try {

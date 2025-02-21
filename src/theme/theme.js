@@ -11,6 +11,9 @@ const theme = createTheme({
       main: "#c7e8b3",
     },
   },
+  typography: {
+    fontFamily: '"Signika", "Arial", sans-serif', // Set Signika as default font
+  },
 });
 
 export default theme;

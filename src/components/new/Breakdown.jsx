@@ -1,9 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
-// Import Context
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 import { ColorContext } from "@/context/ColorContext";
+import { UserContext } from "@/context/UserContext";
 
+// MUI
 import {
   Box,
   Button,
@@ -20,14 +22,16 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-
 import dayjs from "dayjs";
-
-import { deleteBreakdown } from "@/app/actions";
 import { Cancel } from "@mui/icons-material";
 
+// COMPONENTs
 import CategorySelectBox from "./CategorySelectBox";
 import EditBreakdown from "./EditBreakdown";
+
+// HOOKS
+import { deleteBreakdown } from "@/app/actions";
+import { deleteBreakdownLocal } from "@/lib/localApi";
 
 export default function Breakdown({
   getBreakdownData,
@@ -38,14 +42,22 @@ export default function Breakdown({
 }) {
   const { section } = useContext(FilterContext);
   const colorPalette = useContext(ColorContext);
+  const { user, setUser } = useContext(UserContext);
 
   const theme = useTheme().palette;
   const box = useRef(null);
 
-  // STATE FOR EDIT
+  // State to toggle edit form
   const [edit, setEdit] = useState(false);
-
+  // Breakdown data to display
   const { _id, name, amount, category, sub_category, date } = breakdown;
+
+  // To distiguish each category by color
+  const categoryIndex = categoryData
+    .map((cate) => cate._id)
+    .indexOf(category._id);
+  //   const subCategoryIndex =
+  //     -category.sub_category.map((sub) => sub._id).indexOf(sub_category._id) + 10;
 
   const month = new Date(date).getMonth() + 1;
   const day = new Date(date).getDate();
@@ -62,21 +74,18 @@ export default function Breakdown({
   }, [breakdown]);
 
   const handleDeleteItem = async () => {
-    const data = await deleteBreakdown(section, _id);
+    if (user) {
+      const data = await deleteBreakdown(section, _id);
+    } else {
+      deleteBreakdownLocal(section, _id);
+    }
+
     getBreakdownData();
   };
 
   const handleToggleEditForm = () => {
     edit ? setEdit(false) : setEdit(true);
-    // const display = editBox.current.style.display;
-    // editBox.current.style.display = display === "none" ? "block" : "none";
   };
-
-  // const handleDatePicking = (e) => {
-  //     setNewBreakdown(prev => ({...prev, date: e.$d}))
-  //     setSelectedDate(e.$d)
-  //     setDate(e.$d)
-  // }
 
   return (
     <>
@@ -129,7 +138,8 @@ export default function Breakdown({
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
-            color: colorPalette[0],
+            color: colorPalette[categoryIndex],
+            cursor: "pointer",
           }}
           onClick={() => handleFilter(category.category)}
         >
@@ -141,6 +151,7 @@ export default function Breakdown({
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
+            // color: colorPalette[categoryIndex],
           }}
         >
           {sub_category ? sub_category.name : ""}

@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Signika } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/theme/ThemeProvider";
 import { FilterProvider } from "@/context/filterContext";
@@ -10,6 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import NavBar from "@/layout/NavBar";
 import Footer from "@/components/generic/Footer";
 import Login from "@/components/user/Login";
+
+const signika = Signika({ subsets: ["latin"], weight: ["400", "700"] });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +32,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${signika.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider>
           <FilterProvider>

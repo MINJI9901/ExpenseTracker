@@ -1,72 +1,82 @@
 "use client";
 import { useState, useContext, useEffect } from "react";
-import { FilterContext } from "@/context/filterContext";
 
+// CONTEXTS
+import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
+
+// MUI
 import { Box, Button, Grid2 } from "@mui/material";
+
+// COMPONENTS
 import FormContainer from "@/components/new/FormContainer";
 import BreakdownBoard from "@/components/new/BreakdownBoard";
-
 import DateRangeSelector from "@/components/generic/DateRangeSelector";
-import { getBreakdown, getCategories } from "@/app/actions";
 
-import { createClient } from "@/utils/supabase/client";
+// HOOKS
+import { getBreakdown, getCategories } from "@/app/actions";
+import { getCategoriesLocal, getBreakdownLocal } from "@/lib/localApi";
 
 const now = new Date();
 
 const Page = () => {
   console.log("renders for NEW");
   const { section } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [breakdownData, setBreakdownData] = useState([]);
   const [newBreakdownData, setNewBreakdownData] = useState({});
   const [categoryData, setCategoryData] = useState([]);
 
-  //   const [dateRange, setDateRange] = useState({
-  //     start: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-  //     end:
-  //       selectedDate.getMonth() === new Date().getMonth()
-  //         ? new Date()
-  //         : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
-  //   });
   const [dateRange, setDateRange] = useState({
     start: new Date(now.getFullYear(), now.getMonth(), 1),
     end: new Date(),
   });
 
-  const authenticateUser = async () => {
-    const supabase = createClient();
+  //   const authenticateUser = async () => {
+  //     const supabase = createClient();
 
-    const { data, error } = await supabase.auth.getUser();
-    console.log("user data: ", data);
+  //     const { data, error } = await supabase.auth.getUser();
+  //     console.log("user data: ", data);
 
-    return data?.user || error;
-  };
+  //     return data?.user || error;
+  //   };
 
   const getBreakdownData = async (isNewAdded) => {
-    const user = await authenticateUser();
+    let data;
+
     if (user) {
-      const data = await getBreakdown(section, dateRange);
-
+      data = await getBreakdown(section, dateRange);
       console.log("breakdown data: ", data);
-
-      // Set newly added breakdown if exists
-      if (isNewAdded) {
-        setNewBreakdownData(
-          data.find(
-            (item) => !breakdownData.map((item) => item._id).includes(item._id)
-          )
-        );
-      } else setNewBreakdownData({});
-
-      setBreakdownData([...data]);
+    } else {
+      data = getBreakdownLocal(section, dateRange);
+      console.log("breakdown data: ", data);
     }
+
+    // Set newly added breakdown if exists
+    if (isNewAdded) {
+      setNewBreakdownData(
+        data.find(
+          (item) => !breakdownData.map((data) => data._id).includes(item._id)
+        )
+      );
+    } else setNewBreakdownData({});
+
+    setBreakdownData([...data]);
   };
 
   const getCategoryData = async () => {
-    const data = await getCategories(section, dateRange.start);
-    console.log("category data: ", data);
+    if (user) {
+      const data = await getCategories(section, dateRange.start);
+      console.log("category data: ", data);
 
-    setCategoryData([...data]);
+      setCategoryData([...data]);
+    } else {
+      const data = getCategoriesLocal(section, dateRange.start);
+      console.log("category data: ", data);
+
+      setCategoryData([...data]);
+    }
   };
 
   useEffect(() => {

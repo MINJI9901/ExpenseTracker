@@ -2,14 +2,20 @@
 
 import { useState, useContext, useEffect } from "react";
 
+// CONTEXTS
+import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
+
+// MUI
 import { Box, Grid2, Button, useTheme } from "@mui/material";
 
-import { FilterContext } from "@/context/filterContext";
-// import { getCategories } from "@/app/actions";
-
+// COMPONENTS
 import InputBox from "./InputBox";
 import CategorySelectBox from "./CategorySelectBox";
+
+// HOOKS
 import { addBreakdown } from "@/app/actions";
+import { addBreakdownLocal } from "@/lib/localApi";
 
 export default function FormContainer({
   getBreakdownData,
@@ -17,8 +23,8 @@ export default function FormContainer({
   dateRange,
 }) {
   const { palette } = useTheme();
-  const filters = useContext(FilterContext);
-  const { section } = filters;
+  const { section } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   //   const [categories, setCategories] = useState([]);
@@ -42,7 +48,13 @@ export default function FormContainer({
   const handleSubmit = async (e) => {
     if (e.target.checkValidity()) {
       e.preventDefault();
-      await addBreakdown(section, newBreakdown);
+
+      if (user) {
+        await addBreakdown(section, newBreakdown);
+      } else {
+        addBreakdownLocal(section, newBreakdown);
+      }
+
       getBreakdownData(true);
     } else {
       e.preventDefault();

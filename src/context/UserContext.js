@@ -10,11 +10,11 @@ import { authenticateUser } from "@/app/login/actions";
 export const UserContext = createContext({ user: null, setUser: null });
 
 export const UserProvider = ({ children }) => {
-  const [isUser, setIsUser] = useState({});
+  const [user, setUser] = useState(null);
   // console.log('user initial state: ', isUser)
 
   return (
-    <UserContext.Provider value={{ user: isUser, setUser: setIsUser }}>
+    <UserContext.Provider value={{ user: user, setUser: setUser }}>
       {children}
     </UserContext.Provider>
   );

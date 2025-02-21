@@ -1,10 +1,17 @@
 "use client";
 import { useState, useContext, useEffect } from "react";
+
+// CONTEXT
 import { FilterContext } from "@/context/filterContext";
+
+// MUI
 import { Box, useTheme, Typography } from "@mui/material";
 import DateRangeSelector from "../generic/DateRangeSelector";
 
+// COMPONENTS
 import Breakdown from "./Breakdown";
+
+// HOOKS
 import { getBreakdown } from "@/app/actions";
 
 export default function BreakdownBoard({
@@ -192,7 +199,7 @@ export default function BreakdownBoard({
         <Typography fontSize={"1rem"} fontWeight={700}>
           ${" "}
           {displayedData
-            .reduce((prev, curr) => prev + curr.amount, 0)
+            .reduce((prev, curr) => prev + parseFloat(curr.amount), 0)
             .toLocaleString("en", { maximumFractionDigits: 2 })}
         </Typography>
       </Box>

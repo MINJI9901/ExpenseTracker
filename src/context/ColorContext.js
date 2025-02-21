@@ -2,7 +2,7 @@
 import { createContext } from "react";
 
 const colorPalette = [
-  "#002e2c",
+  "#005e5c",
   "#80c8d9",
   "#c7e8b3",
   "#ebdae1",
@@ -10,9 +10,9 @@ const colorPalette = [
   "#C5BAFF",
   "#FFFBCA",
   "#A35C7A",
-  "#D0DDD0",
-  "#F5EFFF",
-  "009990",
+  "#B3D8A8",
+  "#EABDE6",
+  "#009990",
 ];
 
 export const ColorContext = createContext(colorPalette);

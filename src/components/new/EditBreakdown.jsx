@@ -1,9 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
-// Import Context
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 import { ColorContext } from "@/context/ColorContext";
+import { UserContext } from "@/context/UserContext";
 
+// MUI
 import {
   Box,
   Button,
@@ -14,7 +16,9 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
+// HOOKS
 import { updateBreakdown } from "@/app/actions";
+import { updateBreakdownLocal } from "@/lib/localApi";
 
 export default function EditBreakdown({
   editState,
@@ -25,6 +29,7 @@ export default function EditBreakdown({
 }) {
   const { section } = useContext(FilterContext);
   const colorPalette = useContext(ColorContext);
+  const { user, setUser } = useContext(UserContext);
 
   const editBox = useRef(null);
 
@@ -65,9 +70,13 @@ export default function EditBreakdown({
   };
 
   const handleSave = async () => {
-    const data = await updateBreakdown(section, editedBreakdown);
-
-    console.log(data);
+    if (user) {
+      const data = await updateBreakdown(section, editedBreakdown);
+      console.log(data);
+    } else {
+      const data = updateBreakdownLocal(section, editedBreakdown);
+      console.log(data);
+    }
 
     setEdit(false);
     await getBreakdownData();

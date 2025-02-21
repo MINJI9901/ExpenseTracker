@@ -1,12 +1,18 @@
 "use client";
 import { useState, useContext } from "react";
 
+// MUI
 import { useTheme } from "@mui/material";
 import { Box, Card, Typography, Input, Button } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+// CONTEXT
 import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
+
+// HOOKS
 import { updatedCategory, deleteCategory } from "@/app/actions";
+import { updatedCategoryLocal, deleteCategoryLocal } from "@/lib/localApi";
 
 export default function BudgetBox({
   categoryId,
@@ -17,8 +23,8 @@ export default function BudgetBox({
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
   const [subCategoryInput, setSubCategoryInput] = useState(subCategoryData);
 
-  const filters = useContext(FilterContext);
-  const { section, selectedDate } = filters;
+  const { section, selectedDate } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
   // TO MODIFY SUB-CATEGORY PROPERTIES
   const handleDoubleClick = (e) => {
@@ -40,11 +46,17 @@ export default function BudgetBox({
   // SAVE MODIFIED SUB-CATEGORY DATA
   const handleSubmitSubCategory = async (e) => {
     if (e.keyCode === 13) {
-      const result = await updatedCategory(
-        section,
-        categoryId,
-        subCategoryInput
-      );
+      if (user) {
+        const result = await updatedCategory(
+          section,
+          categoryId,
+          subCategoryInput
+        );
+      } else {
+        console.log(subCategoryInput);
+        updatedCategoryLocal(section, categoryId, subCategoryInput);
+      }
+
       fetchCategories();
       setIsDoubleClicked((prev) => !prev);
     }
@@ -52,10 +64,14 @@ export default function BudgetBox({
 
   // DELETE SUB-CATEGORY DATA
   const handleDeleteSubCategory = async () => {
-    const result = await deleteCategory(section, {
-      categoryId: categoryId,
-      subCategoryId: subCategoryData._id,
-    });
+    const ids = { categoryId: categoryId, subCategoryId: subCategoryData._id };
+
+    if (user) {
+      const result = await deleteCategory(section, ids);
+    } else {
+      deleteCategoryLocal(section, ids);
+    }
+
     fetchCategories();
   };
 
@@ -84,56 +100,71 @@ export default function BudgetBox({
         >
           <DeleteOutlineIcon></DeleteOutlineIcon>
         </Box>
-        <Typography
+
+        {isDoubleClicked ? (
+          <Box
+            sx={{
+              lineHeight: "2.5rem",
+              maxWidth: "60%",
+              overflowX: "auto",
+              textWrap: "nowrap",
+            }}
+          >
+            <Input
+              name="name"
+              onChange={handleSubCategoryInput}
+              value={subCategoryInput.name}
+            ></Input>
+          </Box>
+        ) : (
+          <Typography
+            sx={{
+              lineHeight: "2.5rem",
+              maxWidth: "60%",
+              overflowX: "auto",
+              textWrap: "nowrap",
+            }}
+          >
+            {subCategoryData.name}
+          </Typography>
+        )}
+      </Box>
+
+      {isDoubleClicked ? (
+        <Box
           sx={{
             lineHeight: "2.5rem",
-            maxWidth: "60%",
+            maxWidth: "40%",
             overflowX: "auto",
             textWrap: "nowrap",
           }}
         >
-          {isDoubleClicked ? (
-            <Box>
-              <Input
-                name="name"
-                onChange={handleSubCategoryInput}
-                value={subCategoryInput.name}
-              ></Input>
-            </Box>
-          ) : (
-            subCategoryData.name
-          )}
-        </Typography>
-      </Box>
-      <Typography
-        sx={{
-          lineHeight: "2.5rem",
-          maxWidth: "40%",
-          overflowX: "auto",
-          textWrap: "nowrap",
-        }}
-      >
-        {isDoubleClicked ? (
-          <Box>
-            <label htmlFor="">$ </label>
-            <Input
-              type="number"
-              name={section === "Expense" ? "budget" : "expected_amount"}
-              onChange={handleSubCategoryInput}
-              value={
-                subCategoryInput.budget || subCategoryInput.expected_amount || 0
-              }
-            ></Input>
-          </Box>
-        ) : (
-          `$
-          ${(section === "Expense"
+          <label htmlFor="">$ </label>
+          <Input
+            type="number"
+            name={section === "Expense" ? "budget" : "expected_amount"}
+            onChange={handleSubCategoryInput}
+            value={
+              subCategoryInput.budget || subCategoryInput.expected_amount || 0
+            }
+          ></Input>
+        </Box>
+      ) : (
+        <Typography
+          sx={{
+            lineHeight: "2.5rem",
+            maxWidth: "40%",
+            overflowX: "auto",
+            textWrap: "nowrap",
+          }}
+        >
+          {`$ ${(section === "Expense"
             ? subCategoryData.budget || 0
             : subCategoryData.expected_amount || 0
           ).toLocaleString("en", { maximumFractionDigits: 2 })}
-        `
-        )}
-      </Typography>
+          `}
+        </Typography>
+      )}
     </Card>
   );
 }

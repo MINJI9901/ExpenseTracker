@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 
+// MUI
 import {
   Box,
   Container,
@@ -14,17 +15,27 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
 import DoneIcon from "@mui/icons-material/Done";
 
-import { addSubCategory, updatedCategory, deleteCategory } from "@/app/actions";
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
 
+// HOOKS
+import { addSubCategory, updatedCategory, deleteCategory } from "@/app/actions";
+import {
+  updatedCategoryLocal,
+  addSubCategoryLocal,
+  deleteCategoryLocal,
+} from "@/lib/localApi";
+
+// COMPONENTS
 import BudgetBox from "./BudgetBox";
 
 export default function CategoryCard({ categoryData, fetchCategories }) {
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
   const [categoryInput, setCategoryInput] = useState(categoryData.category);
 
-  const filters = useContext(FilterContext);
-  const { section, selectedDate } = filters;
+  const { section, selectedDate } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
   const amountPerCategory = categoryData.sub_category.reduce(
     (prev, curr) =>
@@ -37,7 +48,12 @@ export default function CategoryCard({ categoryData, fetchCategories }) {
 
   // ADD SUB-CATEGORY FOR A CATEGORY
   const handleAddSubCategory = async () => {
-    await addSubCategory(section, categoryData._id);
+    if (user) {
+      await addSubCategory(section, categoryData._id);
+    } else {
+      addSubCategoryLocal(section, categoryData._id);
+    }
+
     fetchCategories();
   };
 
@@ -55,9 +71,15 @@ export default function CategoryCard({ categoryData, fetchCategories }) {
   // SAVE MODIFIED CATEGORY NAME
   const handleSubmitCategory = async (e) => {
     if (e.keyCode === 13) {
-      const result = await updatedCategory(section, categoryData._id, {
-        category: categoryInput,
-      });
+      if (user) {
+        const result = await updatedCategory(section, categoryData._id, {
+          category: categoryInput,
+        });
+      } else {
+        updatedCategoryLocal(section, categoryData._id, {
+          category: categoryInput,
+        });
+      }
       fetchCategories();
       setIsDoubleClicked((prev) => !prev);
     }
@@ -65,7 +87,12 @@ export default function CategoryCard({ categoryData, fetchCategories }) {
 
   // DELETE CATEGORY
   const handleDeleteCategory = async () => {
-    const result = await deleteCategory(section, categoryData._id);
+    if (user) {
+      const result = await deleteCategory(section, categoryData._id);
+    } else {
+      deleteCategoryLocal(section, categoryData._id);
+    }
+
     fetchCategories();
   };
 

@@ -15,15 +15,22 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 import { FilterContext } from "@/context/filterContext";
+import { UserContext } from "@/context/UserContext";
 import {
   getCategories,
   addCategory,
   addPastData,
   deleteCategory,
 } from "@/app/actions";
+import {
+  getCategoriesLocal,
+  addCategoryLocal,
+  addPastDataLocal,
+} from "@/lib/localApi";
 
 import CategoryCard from "./CategoryCard";
-import { Check } from "@mui/icons-material";
+
+import { createClient } from "@/utils/supabase/client";
 
 let totalAmount = 0;
 
@@ -35,41 +42,74 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   const { section } = filters;
 
   const [categories, setCategories] = useState([]);
-  const [importedCategories, setImportedCategories] = useState([]);
-  // const [isUpdated, setIsUpdated] = useState(false);
+  //   const [importedCategories, setImportedCategories] = useState([]);
+  //   const [user, setUser] = useState(null);
+  //   User Context
+  const { user, setUser } = useContext(UserContext);
 
-  // Getting the category data
+  //   const checkUser = async () => {
+  //     const supabase = createClient();
+
+  //     const { data, error } = await supabase.auth.getUser();
+
+  //     setUser(data?.user);
+  //   };
+
+  // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
-    const data = await getCategories(section, monthlyDate);
+    let data = [];
+    if (user) {
+      data = await getCategories(section, monthlyDate);
 
-    data.forEach((category) => {
-      category.sub_category.forEach((sub) => {
-        totalAmount += section == "Expense" ? sub.budget : sub.expected_amount;
+      data.forEach((category) => {
+        category.sub_category.forEach((sub) => {
+          totalAmount +=
+            section == "Expense" ? sub.budget : sub.expected_amount;
+        });
       });
-    });
-
+      // WHEN IT'S NOT AN AUTHENTICATED USER
+    } else {
+      //   localStorage.removeItem(`${section.toLowerCase()}Categories`);
+      data = getCategoriesLocal(section, monthlyDate);
+    }
     setCategories(data);
     setSumOfAmount(totalAmount);
   };
 
-  // GET DATA
+  // useEffecs
+  //   useEffect(() => {
+  //     checkUser();
+  //   }, []);
+
   useEffect(() => {
+    // localStorage.removeItem("expenseCategories");
     fetchCategories();
-  }, [monthlyDate, section, importedCategories]);
+  }, [monthlyDate, section, user]);
 
   // ADD NEW CATEGORY
   const handleAddCategory = async () => {
-    await addCategory(section, monthlyDate);
+    if (user) {
+      await addCategory(section, monthlyDate);
+    } else {
+      addCategoryLocal(section, monthlyDate);
+    }
     fetchCategories();
   };
 
+  // TAKE LAST MONTH PLAN DATA AND ADD FOR THE MONTH
   const handleTakeData = async (e) => {
+    let lastMonthData;
+
     const lastMonth = new Date(
       monthlyDate.getFullYear(),
       monthlyDate.getMonth() - 1
     );
 
-    const lastMonthData = await getCategories(section, lastMonth);
+    if (user) {
+      lastMonthData = await getCategories(section, lastMonth);
+    } else {
+      lastMonthData = getCategoriesLocal(section, lastMonth);
+    }
 
     const copiedData = lastMonthData.map((doc) => ({
       category: doc.category,
@@ -79,9 +119,14 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
     }));
     console.log("Date updated data: ", copiedData);
 
-    const importedData = await addPastData(section, copiedData);
+    if (user) {
+      const importedData = await addPastData(section, copiedData);
+      //   setImportedCategories(importedData);
+    } else {
+      addPastDataLocal(section, copiedData);
+    }
 
-    setImportedCategories(importedData);
+    fetchCategories();
     // 이렇게 해버리면 monthlyDate가 아예 새로 설정돼버려서 안 됨
     // console.log(monthlyDate.setMonth(monthlyDate.getMonth() - 1));
   };
