@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-
+// MUI
 import {
   Box,
   Container,
@@ -14,22 +14,24 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 import { UserContext } from "@/context/UserContext";
+// HOOKS
 import {
   getCategories,
   addCategory,
   addPastData,
   deleteCategory,
-} from "@/app/actions";
+} from "@/lib/api";
 import {
   getCategoriesLocal,
   addCategoryLocal,
   addPastDataLocal,
 } from "@/lib/localApi";
-
+// COMPONENTS
 import CategoryCard from "./CategoryCard";
-
+// SUPABASE
 import { createClient } from "@/utils/supabase/client";
 
 let totalAmount = 0;
@@ -60,18 +62,20 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
     let data = [];
     if (user) {
       data = await getCategories(section, monthlyDate);
-
-      data.forEach((category) => {
-        category.sub_category.forEach((sub) => {
-          totalAmount +=
-            section == "Expense" ? sub.budget : sub.expected_amount;
-        });
-      });
       // WHEN IT'S NOT AN AUTHENTICATED USER
     } else {
       //   localStorage.removeItem(`${section.toLowerCase()}Categories`);
       data = getCategoriesLocal(section, monthlyDate);
     }
+    data.forEach((category) => {
+      category.sub_category.forEach((sub) => {
+        const amountToAdd = parseFloat(
+          section == "Expense" ? sub.budget : sub.expected_amount
+        );
+        totalAmount += amountToAdd;
+      });
+    });
+
     setCategories(data);
     setSumOfAmount(totalAmount);
   };

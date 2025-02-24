@@ -17,7 +17,7 @@ import {
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 // HOOKS
-import { updateBreakdown } from "@/app/actions";
+import { updateBreakdown } from "@/lib/api";
 import { updateBreakdownLocal } from "@/lib/localApi";
 
 export default function EditBreakdown({

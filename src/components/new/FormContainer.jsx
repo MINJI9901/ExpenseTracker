@@ -14,7 +14,7 @@ import InputBox from "./InputBox";
 import CategorySelectBox from "./CategorySelectBox";
 
 // HOOKS
-import { addBreakdown } from "@/app/actions";
+import { addBreakdown } from "@/lib/api";
 import { addBreakdownLocal } from "@/lib/localApi";
 
 export default function FormContainer({

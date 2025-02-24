@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { login, signup } from "./actions";
 import { authenticateUser } from "./actions";
 
 import Login from "@/components/user/Login";

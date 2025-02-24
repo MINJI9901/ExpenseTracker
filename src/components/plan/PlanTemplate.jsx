@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-
+// MUI
 import { Box, Container, Grid2, Stack, Button, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
-import { addCategory } from "@/app/actions";
-
+// HOOKS
+import { addCategory } from "@/lib/api";
+// COMPONENTS
 import CategoryCard from "./CategoryCard";
 
 export default function PlanTemplate() {

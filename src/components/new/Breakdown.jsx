@@ -30,7 +30,7 @@ import CategorySelectBox from "./CategorySelectBox";
 import EditBreakdown from "./EditBreakdown";
 
 // HOOKS
-import { deleteBreakdown } from "@/app/actions";
+import { deleteBreakdown } from "@/lib/api";
 import { deleteBreakdownLocal } from "@/lib/localApi";
 
 export default function Breakdown({

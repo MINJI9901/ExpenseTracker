@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { FilterContext } from "@/context/filterContext";
 
 export default function CategoryMenu({ categories }) {
-  const { setCategory } = useContext(FilterContext);
+  const { setSelectedCategory } = useContext(FilterContext);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpenMenu = (e) => {
@@ -16,7 +16,7 @@ export default function CategoryMenu({ categories }) {
 
   const handleCloseMenu = (e) => {
     setAnchorEl(null);
-    setCategory(e.target.innerText);
+    setSelectedCategory(e.target.innerText);
   };
   return (
     <>

@@ -11,7 +11,7 @@ import { FilterContext } from "@/context/filterContext";
 import { UserContext } from "@/context/UserContext";
 
 // HOOKS
-import { updatedCategory, deleteCategory } from "@/app/actions";
+import { updatedCategory, deleteCategory } from "@/lib/api";
 import { updatedCategoryLocal, deleteCategoryLocal } from "@/lib/localApi";
 
 export default function BudgetBox({

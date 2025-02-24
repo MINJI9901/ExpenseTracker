@@ -20,7 +20,7 @@ import { FilterContext } from "@/context/filterContext";
 import { UserContext } from "@/context/UserContext";
 
 // HOOKS
-import { addSubCategory, updatedCategory, deleteCategory } from "@/app/actions";
+import { addSubCategory, updatedCategory, deleteCategory } from "@/lib/api";
 import {
   updatedCategoryLocal,
   addSubCategoryLocal,

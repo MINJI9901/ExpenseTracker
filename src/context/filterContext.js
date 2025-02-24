@@ -27,14 +27,14 @@ const pages = [currentMonth, "Page", "Expense"];
 export const FilterProvider = ({ children }) => {
   const [menu, setMenu] = useState(pages);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [category, setCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   return (
     <FilterContext.Provider
       value={{
         section: menu[2],
-        category,
-        setCategory,
+        selectedCategory,
+        setSelectedCategory,
         menu,
         setMenu,
         selectedDate,

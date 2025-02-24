@@ -12,7 +12,7 @@ import DateRangeSelector from "../generic/DateRangeSelector";
 import Breakdown from "./Breakdown";
 
 // HOOKS
-import { getBreakdown } from "@/app/actions";
+import { getBreakdown } from "@/lib/api";
 
 export default function BreakdownBoard({
   getBreakdownData,

@@ -1,6 +1,8 @@
 "use client";
 import { useState, useContext, useEffect } from "react";
-
+// NEXTJS
+import Image from "next/image";
+// MUI
 import {
   useTheme,
   Box,
@@ -20,16 +22,15 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import AdbIcon from "@mui/icons-material/Adb";
-import Image from "next/image";
-import logo from "../../public/img/orange_heart_favicon.ico";
 
+// FILE
+import logo from "../../../public/img/orange_heart_favicon.ico";
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 import { UserContext } from "@/context/UserContext";
-
-import { authenticateUser } from "@/app/login/actions";
+// HOOKS
 import { logout, login } from "@/app/login/actions";
-
+// SUPABASE
 import { createClient } from "@/utils/supabase/client";
 
 const month = [

@@ -14,7 +14,7 @@ import BreakdownBoard from "@/components/new/BreakdownBoard";
 import DateRangeSelector from "@/components/generic/DateRangeSelector";
 
 // HOOKS
-import { getBreakdown, getCategories } from "@/app/actions";
+import { getBreakdown, getCategories } from "@/lib/api";
 import { getCategoriesLocal, getBreakdownLocal } from "@/lib/localApi";
 
 const now = new Date();
@@ -32,15 +32,6 @@ const Page = () => {
     start: new Date(now.getFullYear(), now.getMonth(), 1),
     end: new Date(),
   });
-
-  //   const authenticateUser = async () => {
-  //     const supabase = createClient();
-
-  //     const { data, error } = await supabase.auth.getUser();
-  //     console.log("user data: ", data);
-
-  //     return data?.user || error;
-  //   };
 
   const getBreakdownData = async (isNewAdded) => {
     let data;
