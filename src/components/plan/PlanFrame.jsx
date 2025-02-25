@@ -34,9 +34,8 @@ import CategoryCard from "./CategoryCard";
 // SUPABASE
 import { createClient } from "@/utils/supabase/client";
 
-let totalAmount = 0;
-
 export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
+  let totalAmount = 0;
   console.log("renders");
   const { palette } = useTheme();
 
@@ -60,6 +59,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
     let data = [];
+    console.log("user in Plan: ", user);
     if (user) {
       data = await getCategories(section, monthlyDate);
       // WHEN IT'S NOT AN AUTHENTICATED USER
@@ -72,7 +72,8 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
         const amountToAdd = parseFloat(
           section == "Expense" ? sub.budget : sub.expected_amount
         );
-        totalAmount += amountToAdd;
+
+        totalAmount += parseFloat(amountToAdd);
       });
     });
 
@@ -137,31 +138,52 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
 
   return (
     <>
-      <Button
-        disableRipple
-        sx={{
-          position: { xs: "absolute", md: "static" },
-          top: "4rem",
-          right: "1rem",
-          //   bgcolor: palette.secondary.main,
-          border: "1px solid orange",
-          color: "black",
-          margin: { xs: "1rem 3rem", md: "0.5rem 3rem" },
-          "&:hover": {
-            bgcolor: palette.grey[100],
-          },
-          "&:active": {
-            boxShadow: "0 0 10px gray",
-          },
-        }}
-        onClick={handleTakeData}
-      >
-        Import last month categories
-      </Button>
-      {/* <FormControlLabel
-        control={<Checkbox />}
-        label="Take data from last month"
-      ></FormControlLabel> */}
+      <Box display={"flex"}>
+        <Button
+          disableRipple
+          sx={{
+            position: { xs: "static", sm: "absolute", md: "static" },
+            top: "5rem",
+            right: "1rem",
+            //   bgcolor: palette.secondary.main,
+            border: "1px solid orange",
+            color: "black",
+            margin: { xs: "0.5rem 2rem", md: "0.5rem 3rem" },
+            "&:hover": {
+              bgcolor: palette.grey[100],
+            },
+            "&:active": {
+              boxShadow: "0 0 10px gray",
+            },
+          }}
+          onClick={handleTakeData}
+        >
+          Import last month categories
+        </Button>
+        <Button
+          disableRipple
+          sx={{
+            display: { xs: "inline-block", sm: "none" },
+            position: "static",
+            top: "5rem",
+            right: "1rem",
+            //   bgcolor: palette.secondary.main,
+            border: "1px solid green",
+            color: "black",
+            margin: { xs: "0.5rem 0", md: "0.5rem 3rem" },
+            "&:hover": {
+              bgcolor: palette.grey[100],
+            },
+            "&:active": {
+              boxShadow: "0 0 10px gray",
+            },
+          }}
+          onClick={handleAddCategory}
+        >
+          Add Category
+        </Button>
+      </Box>
+
       <Grid2
         container
         spacing={2}
@@ -194,7 +216,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
           </Box>
         </Grid2>
         <Grid2
-          size={{ xs: 9, sm: 10, lg: 11 }}
+          size={{ xs: 10.5, sm: 10, lg: 11 }}
           container
           sx={{ flexWrap: "nowrap", overflowX: "auto" }}
         >
@@ -206,9 +228,11 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
             />
           ))}
         </Grid2>
-        <Grid2 size={{ xs: 1.5, sm: 1, lg: 0.5 }}>
+        <Grid2
+          size={{ xs: 0, sm: 1, lg: 0.5 }}
+          display={{ xs: "none", sm: "grid" }}
+        >
           <Box
-            onClick={handleAddCategory}
             variant="text"
             sx={{
               display: "flex",
@@ -224,6 +248,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
               margin: "auto",
               cursor: "pointer",
             }}
+            onClick={handleAddCategory}
           >
             <AddIcon size="sm"></AddIcon>
             Add Category

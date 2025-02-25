@@ -6,23 +6,7 @@ export const FilterContext = createContext({
   section: "Expense",
 });
 
-const month = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const currentMonth = month[new Date().getMonth()];
-
-const pages = [currentMonth, "Page", "Expense"];
+const pages = ["Expense"];
 
 export const FilterProvider = ({ children }) => {
   const [menu, setMenu] = useState(pages);
@@ -32,7 +16,7 @@ export const FilterProvider = ({ children }) => {
   return (
     <FilterContext.Provider
       value={{
-        section: menu[2],
+        section: menu[0],
         selectedCategory,
         setSelectedCategory,
         menu,

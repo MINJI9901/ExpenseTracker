@@ -103,7 +103,7 @@ export default function Login() {
         mt: "5rem",
         display: "flex",
         justifyContent: "center",
-        width: "50%",
+        width: { xs: "80%", sm: "60%", md: "50%" },
         height: "fit-content",
         border: "1px solid gray",
         borderRadius: "1rem",

@@ -16,12 +16,12 @@ import {
   Avatar,
   Tooltip,
   MenuItem,
+  Link,
 } from "@mui/material";
-import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+// MUI ICONS
+import CreateIcon from "@mui/icons-material/Create";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 // FILE
 import logo from "../../../public/img/orange_heart_favicon.ico";
@@ -32,33 +32,15 @@ import { UserContext } from "@/context/UserContext";
 import { logout, login } from "@/app/login/actions";
 // SUPABASE
 import { createClient } from "@/utils/supabase/client";
-
-const month = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+import zIndex from "@mui/material/styles/zIndex";
 
 // for DESKTOP MENU
 const pageMenu = {
-  Page: ["Summary", "Add New", "Plan"],
-  Expense: ["Expense", "Income", "Asset"],
+  Expense: ["Expense", "Income"],
 };
 
-const pageLinks = { Summary: "/", "Add New": "/new", Plan: "/plan" };
-
-let selectedMonth;
-let selectedYear;
-// let selectedDate = Date.now();
+// const pageLinks = { Summary: "/", "Add New": "/new", Plan: "/plan" };
+// const pageLinks = ["/new", "plan"];
 
 export default function NavBar() {
   const { palette } = useTheme();
@@ -69,8 +51,7 @@ export default function NavBar() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [menuItems, setMenuItems] = useState(pageMenu);
 
-  const { menu, setMenu, selectedDate, setSelectedDate } =
-    useContext(FilterContext);
+  const { menu, setMenu } = useContext(FilterContext);
   const { user, setUser } = useContext(UserContext);
 
   const checkUser = async () => {
@@ -82,10 +63,10 @@ export default function NavBar() {
       console.log("user in NavBar: ", data || error);
       setUser(data?.user);
 
-      setSettings((prev) =>
+      setSettings(() =>
         data?.user
-          ? [...["Profile", "Account", "Dashboard", "Logout"]]
-          : [...["Login/SignUp"]]
+          ? ["Profile", "Account", "Dashboard", "Logout"]
+          : ["Login/SignUp"]
       );
     } catch {
       console.log("hahaha it doesn't work");
@@ -96,11 +77,6 @@ export default function NavBar() {
     checkUser();
   }, []);
 
-  // for USER MENU
-  // const settings = user
-  //   ? ["Profile", "Account", "Dashboard", "Logout"]
-  //   : ["Login/SignUp"];
-
   const handleOpenNavMenu = (e, page) => {
     setAnchorElNav((prev) => ({ ...prev, [page]: e.currentTarget }));
   };
@@ -109,10 +85,12 @@ export default function NavBar() {
     setAnchorElNav((prev) => ({ ...prev, [page]: null }));
   };
 
+  // OPEN USER DROP DOWN MENU
   const handleOpenUserMenu = (e) => {
     setAnchorElUser(e.currentTarget);
   };
 
+  // CLOSE USER DROP DOWN MENU
   const handleCloseUserMenu = async (e) => {
     setAnchorElUser(null);
     const setting = e.target.innerText;
@@ -124,6 +102,7 @@ export default function NavBar() {
     }
   };
 
+  // CLICK EACH MENU ITEM
   const clickMenuItem = (e, page) => {
     const item = e.target.innerText;
 
@@ -145,25 +124,26 @@ export default function NavBar() {
     setAnchorElNav((prev) => ({ ...prev, [page]: null }));
   };
 
+  // CHANGE DATE BASED OFF OF CALENDAR
   const handleCalendar = (e) => {
     selectedMonth = e.$d.toDateString().split(" ")[1];
     selectedYear = e.$y;
   };
 
   // Set "selectedDate"
-  const handleDateSubmit = (page) => {
-    if (selectedMonth) {
-      setSelectedDate(new Date(`${selectedYear}-${selectedMonth}-01`));
+  // const handleDateSubmit = (page) => {
+  //   if (selectedMonth) {
+  //     setSelectedDate(new Date(`${selectedYear}-${selectedMonth}-01`));
 
-      setMenu((prev) => {
-        const arr = [...prev];
-        arr[arr.indexOf(page)] = selectedMonth;
-        return arr;
-      });
-    }
+  //     setMenu((prev) => {
+  //       const arr = [...prev];
+  //       arr[arr.indexOf(page)] = selectedMonth;
+  //       return arr;
+  //     });
+  //   }
 
-    setAnchorElNav((prev) => ({ ...prev, [page]: null }));
-  };
+  //   setAnchorElNav((prev) => ({ ...prev, [page]: null }));
+  // };
 
   return (
     <AppBar position="static" sx={{ mb: "0.5rem" }}>
@@ -190,8 +170,39 @@ export default function NavBar() {
 
           {/* DESKTOP MENU */}
           <Box
-            sx={{ flexGrow: 1, display: "flex", justifyContent: "end", mr: 2 }}
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "end",
+              alignContent: "center",
+              mr: 2,
+            }}
           >
+            <Typography
+              component={"a"}
+              href="/"
+              color="black"
+              margin={"auto 0.5rem"}
+            >
+              <BarChartIcon />
+            </Typography>
+            <Typography
+              component={"a"}
+              href="/new"
+              color="black"
+              margin={"auto 0.5rem"}
+            >
+              New <CreateIcon />
+            </Typography>
+            <Typography
+              component={"a"}
+              href="/plan"
+              color="black"
+              margin={"auto 0.5rem"}
+            >
+              Plan <EditNoteIcon />
+            </Typography>
+
             {menu.map((page) => (
               <Box key={page}>
                 <Button
@@ -202,6 +213,7 @@ export default function NavBar() {
                 </Button>
                 <Menu
                   id="menu-appbar"
+                  sx={{ display: { xs: "none", md: "block" } }}
                   anchorEl={anchorElNav[page]}
                   anchorOrigin={{
                     vertical: "bottom",
@@ -214,49 +226,15 @@ export default function NavBar() {
                   }}
                   open={Boolean(anchorElNav[page])}
                   onClose={() => handleCloseNavMenu(page)}
-                  sx={{ display: { xs: "none", md: "block" } }}
                 >
-                  {month.includes(page) ? (
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={["DateCalendar"]}>
-                        <DemoItem>
-                          <DateCalendar
-                            defaultValue={dayjs(selectedDate)}
-                            views={["month", "year"]}
-                            openTo="month"
-                            minDate={dayjs("2024-01-01")}
-                            maxDate={dayjs("2026-01-01")}
-                            onChange={(e) => handleCalendar(e, page)}
-                            sx={{ height: "fit-content" }}
-                          />
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              width: "90%",
-                            }}
-                          >
-                            <Button
-                              onClick={() => handleDateSubmit(page)}
-                              sx={{
-                                bgcolor: palette.primary.main,
-                                color: "black",
-                                width: "100%",
-                                ml: "2rem",
-                              }}
-                            >
-                              Done
-                            </Button>
-                          </Box>
-                        </DemoItem>
-                      </DemoContainer>
-                    </LocalizationProvider>
-                  ) : menuItems[page] && menuItems[page].length > 0 ? (
+                  {
+                    // menuItems[page] && menuItems[page].length > 0
+                    //   ?
                     menuItems[page].map((menu, index) => (
                       <MenuItem
                         key={menu}
-                        component="a"
-                        href={pageLinks[menu]}
+                        // component="a"
+                        // href={pageLinks[menu]}
                         onClick={(e) => clickMenuItem(e, page)}
                       >
                         <Typography sx={{ textAlign: "center" }}>
@@ -264,9 +242,8 @@ export default function NavBar() {
                         </Typography>
                       </MenuItem>
                     ))
-                  ) : (
-                    ""
-                  )}
+                    // : ""
+                  }
                 </Menu>
               </Box>
             ))}

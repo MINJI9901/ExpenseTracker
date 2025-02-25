@@ -6,7 +6,6 @@ export default function Footer() {
   return (
     <Box
       bgcolor={palette.primary.main}
-      display={"flex"}
       justifyContent={"center"}
       gap={"3rem"}
       p={"2rem"}

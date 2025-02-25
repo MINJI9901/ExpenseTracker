@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono, Signika } from "next/font/google";
 import "./globals.css";
+import { Box } from "@mui/material";
 // THEME
 import ThemeProvider from "@/theme/ThemeProvider";
 // CONTEXT
@@ -9,6 +10,7 @@ import { UserProvider } from "@/context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 // COMPONENTS
 import NavBar from "@/components/generic/NavBar";
+import MobileNavBar from "@/components/generic/MobileNavBar";
 import Footer from "@/components/generic/Footer";
 import Login from "@/components/user/Login";
 
@@ -27,24 +29,33 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Expenser",
   description: "Manage Your Money Flow!",
+  icons: {
+    icon: "/img/orange_heart_favicon.ico", // Default favicon
+    shortcut: "/img/orange_heart_favicon.ico",
+    apple: "/img/orange_heart_favicon.ico", // Apple touch icon
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <link rel="icon" type="image/svg+xml" href="/rabbit_favicon.ico" />
       <body
         className={`${signika.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider>
           <FilterProvider>
             <ThemeProvider>
-              <NavBar />
+              <Box display={{ xs: "none", sm: "block" }}>
+                <NavBar />
+              </Box>
               {children}
               <ToastContainer position="top-center" autoClose={5000} />
               {/* // render echarts option. */}
               {/* <ReactECharts option={this.getOption()} /> */}
-              <Footer />
+              <Box display={{ xs: "none", sm: "flex" }}>
+                <Footer />
+              </Box>
+              <MobileNavBar />
             </ThemeProvider>
           </FilterProvider>
         </UserProvider>

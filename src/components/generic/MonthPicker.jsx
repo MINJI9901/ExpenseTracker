@@ -35,7 +35,6 @@ export default function MonthPicker({ setMonthlyDate }) {
   };
 
   const handleCalendar = (e) => {
-    console.log(e);
     month = e.$M + 1;
     year = e.$y;
   };
@@ -70,7 +69,7 @@ export default function MonthPicker({ setMonthlyDate }) {
         }}
         open={Boolean(isOpen)}
         onClose={handleClose}
-        sx={{ display: { xs: "none", md: "block" } }}
+        // sx={{ display: "{ xs: "block", md: "block" }" }}
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DateCalendar"]}>

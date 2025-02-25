@@ -22,7 +22,7 @@ const now = new Date();
 const Page = () => {
   console.log("renders for NEW");
   const { section } = useContext(FilterContext);
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const [breakdownData, setBreakdownData] = useState([]);
   const [newBreakdownData, setNewBreakdownData] = useState({});
@@ -38,10 +38,8 @@ const Page = () => {
 
     if (user) {
       data = await getBreakdown(section, dateRange);
-      console.log("breakdown data: ", data);
     } else {
       data = getBreakdownLocal(section, dateRange);
-      console.log("breakdown data: ", data);
     }
 
     // Set newly added breakdown if exists
@@ -57,14 +55,13 @@ const Page = () => {
   };
 
   const getCategoryData = async () => {
+    console.log("user in New: ", user);
     if (user) {
       const data = await getCategories(section, dateRange.start);
-      console.log("category data: ", data);
 
       setCategoryData([...data]);
     } else {
       const data = getCategoriesLocal(section, dateRange.start);
-      console.log("category data: ", data);
 
       setCategoryData([...data]);
     }
@@ -73,7 +70,7 @@ const Page = () => {
   useEffect(() => {
     getBreakdownData(false);
     getCategoryData();
-  }, [dateRange, section]);
+  }, [dateRange, section, user]);
 
   return (
     <Grid2 container>

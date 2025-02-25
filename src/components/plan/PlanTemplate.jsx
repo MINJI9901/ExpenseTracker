@@ -78,7 +78,6 @@ export default function PlanTemplate() {
         </Grid2>
         <Grid2 size={{ xs: 1.5, sm: 1, lg: 0.5 }}>
           <Box
-            onClick={handleAddCategory}
             variant="text"
             sx={{
               display: "flex",
@@ -94,6 +93,7 @@ export default function PlanTemplate() {
               margin: "auto",
               cursor: "pointer",
             }}
+            onClick={handleAddCategory}
           >
             <AddIcon size="sm"></AddIcon>
             Add Category
