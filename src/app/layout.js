@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Signika } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Box } from "@mui/material";
 // THEME
@@ -6,6 +7,7 @@ import ThemeProvider from "@/theme/ThemeProvider";
 // CONTEXT
 import { FilterProvider } from "@/context/filterContext";
 import { UserProvider } from "@/context/UserContext";
+import { ProfileProvider } from "@/context/ProfileContext";
 // TOAST
 import { ToastContainer, toast } from "react-toastify";
 // COMPONENTS
@@ -39,25 +41,35 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="afterInteractive"
+        />
+      </head>
+
       <body
         className={`${signika.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider>
-          <FilterProvider>
-            <ThemeProvider>
-              <Box display={{ xs: "none", sm: "block" }}>
-                <NavBar />
-              </Box>
-              {children}
-              <ToastContainer position="top-center" autoClose={5000} />
-              {/* // render echarts option. */}
-              {/* <ReactECharts option={this.getOption()} /> */}
-              <Box display={{ xs: "none", sm: "flex" }}>
-                <Footer />
-              </Box>
-              <MobileNavBar />
-            </ThemeProvider>
-          </FilterProvider>
+          <ProfileProvider>
+            <FilterProvider>
+              <ThemeProvider>
+                <Box display={{ xs: "none", sm: "block" }}>
+                  <NavBar />
+                </Box>
+                {children}
+                <ToastContainer position="top-center" autoClose={5000} />
+                {/* // render echarts option. */}
+                {/* <ReactECharts option={this.getOption()} /> */}
+                <Box display={{ xs: "none", sm: "block" }}>
+                  <Footer />
+                </Box>
+                <MobileNavBar />
+              </ThemeProvider>
+            </FilterProvider>
+          </ProfileProvider>
         </UserProvider>
       </body>
     </html>

@@ -70,7 +70,7 @@ const Page = () => {
   useEffect(() => {
     getBreakdownData(false);
     getCategoryData();
-  }, [dateRange, section, user]);
+  }, [section, user]);
 
   return (
     <Grid2 container>
@@ -86,7 +86,10 @@ const Page = () => {
           <DateRangeSelector
             dateRangeState={dateRange}
             setDateRangeState={setDateRange}
-            getData={getBreakdownData}
+            getData={() => {
+              getBreakdownData();
+              getCategoryData();
+            }}
           />
           <BreakdownBoard
             getBreakdownData={getBreakdownData}

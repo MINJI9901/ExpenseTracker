@@ -62,6 +62,40 @@ export async function signup(formData) {
   redirect("/");
 }
 
+// export async function handleSignInWithGoogle(response) {
+//   const supabase = await createClient();
+
+//   const { data, error } = await supabase.auth.signInWithIdToken({
+//     provider: "google",
+//     token: response.credential,
+//     options: {
+//       redirectTo: `${NEXT_PUBLIC_API_URL}/auth/callback`,
+//     },
+//   });
+
+//   console.log(data);
+// }
+export async function signInWith(provider) {
+  console.log("hello,,, this is working?");
+  const supabase = await createClient();
+  console.log("create client: ", supabase);
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider,
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/callback`,
+    },
+  });
+
+  console.log(data);
+
+  if (error) {
+    console.log(`error in signing in with ${provider}: `, error);
+  }
+}
+
+// export const signInWithGoogle = await signInWith("google");
+
 export async function logout() {
   const supabase = await createClient();
 

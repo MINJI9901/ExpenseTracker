@@ -6,8 +6,10 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { FilterContext } from "@/context/filterContext";
 
-export default function CategoryMenu({ categories }) {
-  const { setSelectedCategory } = useContext(FilterContext);
+export default function CategoryMenu({ categories, configureData }) {
+  // const { selectedCategory, setSelectedCategory } = useContext(FilterContext);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpenMenu = (e) => {
@@ -21,7 +23,8 @@ export default function CategoryMenu({ categories }) {
   return (
     <>
       <Button onClick={handleOpenMenu} sx={{ color: "black" }}>
-        Category <ArrowDropDownIcon fontSize="large" />
+        {selectedCategory === "all" ? "Category" : selectedCategory}{" "}
+        <ArrowDropDownIcon fontSize="large" />
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -37,9 +40,15 @@ export default function CategoryMenu({ categories }) {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        {categories.map((category) => (
+        {["all", ...categories].map((category) => (
           // Key id로 수정 필요 | category.category로 수정 필요
-          <MenuItem key={category} onClick={handleCloseMenu}>
+          <MenuItem
+            key={category}
+            onClick={(e) => {
+              handleCloseMenu(e);
+              configureData(category);
+            }}
+          >
             {category}
           </MenuItem>
         ))}

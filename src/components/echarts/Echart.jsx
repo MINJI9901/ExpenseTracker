@@ -125,7 +125,7 @@ export default function Echart({
   };
 
   return (
-    <Box ref={chartRef} width={"25rem"} height={"20rem"} mx={"auto"}>
+    <Box ref={chartRef} width={"20rem"} height={"20rem"} mx={"auto"}>
       <ReactECharts option={option} />
     </Box>
   );

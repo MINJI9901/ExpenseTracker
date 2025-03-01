@@ -28,6 +28,7 @@ import logo from "../../../public/img/orange_heart_favicon.ico";
 // CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 import { UserContext } from "@/context/UserContext";
+import { ProfileContext } from "@/context/ProfileContext";
 // HOOKS
 import { logout, login } from "@/app/login/actions";
 // SUPABASE
@@ -53,29 +54,15 @@ export default function NavBar() {
 
   const { menu, setMenu } = useContext(FilterContext);
   const { user, setUser } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(ProfileContext);
 
   const checkUser = async () => {
-    try {
-      const supabase = createClient();
-
-      const { data, error } = await supabase.auth.getUser();
-
-      console.log("user in NavBar: ", data || error);
-      setUser(data?.user);
-
-      setSettings(() =>
-        data?.user
-          ? ["Profile", "Account", "Dashboard", "Logout"]
-          : ["Login/SignUp"]
-      );
-    } catch {
-      console.log("hahaha it doesn't work");
-    }
+    setSettings(() => (user ? ["Profile", "Logout"] : ["Login/SignUp"]));
   };
 
   useEffect(() => {
     checkUser();
-  }, []);
+  }, [user]);
 
   const handleOpenNavMenu = (e, page) => {
     setAnchorElNav((prev) => ({ ...prev, [page]: e.currentTarget }));
@@ -129,21 +116,6 @@ export default function NavBar() {
     selectedMonth = e.$d.toDateString().split(" ")[1];
     selectedYear = e.$y;
   };
-
-  // Set "selectedDate"
-  // const handleDateSubmit = (page) => {
-  //   if (selectedMonth) {
-  //     setSelectedDate(new Date(`${selectedYear}-${selectedMonth}-01`));
-
-  //     setMenu((prev) => {
-  //       const arr = [...prev];
-  //       arr[arr.indexOf(page)] = selectedMonth;
-  //       return arr;
-  //     });
-  //   }
-
-  //   setAnchorElNav((prev) => ({ ...prev, [page]: null }));
-  // };
 
   return (
     <AppBar position="static" sx={{ mb: "0.5rem" }}>
@@ -252,8 +224,8 @@ export default function NavBar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  alt="Remy Sharp"
-                  src=""
+                  alt=""
+                  src={userInfo.image.src || ""}
                   sx={{
                     bgcolor: user
                       ? palette.secondary.dark
@@ -284,7 +256,7 @@ export default function NavBar() {
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography
                     component={"a"}
-                    href={setting == "Login/SignUp" ? "/login" : "/"}
+                    href={setting == "Login/SignUp" ? "/login" : "/profile"}
                     sx={{ textAlign: "center" }}
                   >
                     {setting}

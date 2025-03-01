@@ -5,11 +5,13 @@ export default function Footer() {
   const { palette } = useTheme();
   return (
     <Box
+      width={"100%"}
       bgcolor={palette.primary.main}
+      display={"flex"}
       justifyContent={"center"}
       gap={"3rem"}
       p={"2rem"}
-      mt={"5rem"}
+      mt={"auto"}
     >
       <Box>
         <Typography

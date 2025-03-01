@@ -46,7 +46,7 @@ const Page = () => {
           sumOfMoney={sumOfAmount}
         />
       </Box>
-      <Box>
+      <Box mb={"7rem"}>
         <PlanFrame
           monthlyDate={monthlyDate}
           sumOfAmount={sumOfAmount}

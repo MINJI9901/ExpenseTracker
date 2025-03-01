@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // MUI
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -14,15 +14,20 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function MobileNavBar() {
-  const checkUrl = (endpoint) => window.location.href.includes(endpoint);
-  const currValue = checkUrl("new")
-    ? 1
-    : checkUrl("plan")
-    ? 2
-    : checkUrl("login")
-    ? 3
-    : 0;
-  const [value, setValue] = useState(currValue);
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const checkUrl = (endpoint) => window.location.href.includes(endpoint);
+
+    const currValue = checkUrl("new")
+      ? 1
+      : checkUrl("plan")
+      ? 2
+      : checkUrl("login")
+      ? 3
+      : 0;
+
+    setValue(currValue);
+  });
 
   const pages = [
     { label: "Figure", link: "/", icon: <BarChartIcon /> },

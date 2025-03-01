@@ -1,6 +1,6 @@
 "use client";
-import { createContext, useState } from "react";
-import { authenticateUser } from "@/app/login/actions";
+import { createContext, useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 
 // const checkUser = async () => {
 //     const user = await authenticateUser()
@@ -11,7 +11,24 @@ export const UserContext = createContext({ user: null, setUser: null });
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  // console.log('user initial state: ', isUser)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.log("Error to get user: ", error);
+      }
+
+      console.log("user: ", data?.user);
+
+      setUser(data?.user);
+    };
+
+    getUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user: user, setUser: setUser }}>

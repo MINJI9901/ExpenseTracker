@@ -27,7 +27,7 @@ export default function FigureTable({ plannedAmount, usedAmount }) {
 
   return (
     <Container
-      sx={{ width: { xs: "90%", md: "60%" }, my: { xs: "2rem", md: 0 } }}
+      sx={{ width: { xs: "100%", md: "60%" }, my: { xs: "2rem", md: 0 } }}
     >
       <Box
         sx={{

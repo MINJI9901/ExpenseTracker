@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+// MUI
 import {
   Box,
   Button,
@@ -10,11 +10,17 @@ import {
   Typography,
   TextField,
   useTheme,
+  Divider,
 } from "@mui/material";
-
+import { Googl, GitHubIcon } from "@mui/icons-material";
+// TOAST
 import { ToastContainer, toast } from "react-toastify";
-
+// SUPABASE
+import { createClient } from "@/utils/supabase/client";
+// HOOKS
 import { login, signup } from "@/app/login/actions";
+// COMPONENTS
+import { ToastMsg } from "../notification/ToastMsg";
 
 const signUpNotify = (e) => {
   e.preventDefault();
@@ -51,17 +57,6 @@ const loginNotify = async (e) => {
   }
 };
 
-function ToastMsg({ title, content }) {
-  return (
-    <Box textAlign="center" m="0.5rem">
-      <Typography fontWeight={700} color="black">
-        {title}
-      </Typography>
-      <Typography>{content}</Typography>
-    </Box>
-  );
-}
-
 export default function Login() {
   const { palette } = useTheme();
 
@@ -73,12 +68,15 @@ export default function Login() {
   const validateEmail = emailRegex.test(user.email);
   const validatePassword = passwordRegex.test(user.password);
 
+  // useEffect(() => {
+  //   window.handleGoogleLogin = () => signInWith("google");
+  // }, [signInWith]);
+
   const handleEmailInput = (e) => {
     setUser((prev) => ({
       ...prev,
       email: e.target.value,
     }));
-    console.log(user);
     // console.log(validateEmail)
   };
 
@@ -87,7 +85,6 @@ export default function Login() {
       ...prev,
       password: e.target.value,
     }));
-    console.log(user);
   };
 
   const handleSubmit = (e) => {
@@ -95,6 +92,25 @@ export default function Login() {
       e.preventDefault();
     }
   };
+
+  async function signInWith(provider) {
+    console.log("hello,,, this is working?");
+    const supabase = createClient();
+    console.log("create client: ", supabase);
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/callback`,
+      },
+    });
+
+    console.log(data);
+
+    if (error) {
+      console.log(`error in signing in with ${provider}: `, error);
+    }
+  }
 
   return (
     <Box
@@ -175,6 +191,40 @@ export default function Login() {
         >
           SignUp
         </Button>
+        {/* <Button
+          component="button"
+          type="submit"
+          onClick={() => signInWith("google")}
+        >
+          Login in With Google!
+        </Button> */}
+        <Divider sx={{ mb: "2rem", color: "gray" }}>
+          Social Login / Sign-up
+        </Divider>
+
+        <Box mb={"2rem"}>
+          {/* <GoogleLogin /> */}
+          <Button
+            fullWidth
+            color="gray"
+            sx={{
+              border: "1px solid",
+              borderColor: palette.grey[300],
+              mb: "0.5rem",
+            }}
+            onClick={() => signInWith("google")}
+          >
+            Sign in with Google <Google />
+          </Button>
+          <Button
+            fullWidth
+            color="gray"
+            sx={{ bgcolor: palette.grey[200] }}
+            onClick={() => signInWith("github")}
+          >
+            Sign in with GitHub <GitHubIcon />
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

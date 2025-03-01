@@ -111,7 +111,10 @@ export default function DateRangeSelector({
                 variant: "standard",
               },
             }}
-            onChange={handleEndDate}
+            onChange={(e) => {
+              handleEndDate(e);
+              getData();
+            }}
           />
         </DemoContainer>
       </LocalizationProvider>

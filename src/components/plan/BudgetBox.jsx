@@ -19,7 +19,7 @@ export default function BudgetBox({
   subCategoryData,
   fetchCategories,
 }) {
-  const theme = useTheme();
+  const { palette } = useTheme();
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
   const [subCategoryInput, setSubCategoryInput] = useState(subCategoryData);
 

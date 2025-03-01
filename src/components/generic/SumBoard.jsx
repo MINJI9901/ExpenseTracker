@@ -1,7 +1,10 @@
 "use client";
+import { useTheme } from "@emotion/react";
+// MUI
 import { Box, Typography } from "@mui/material";
 // import { useTheme } from "@mui/material";
-import { useTheme } from "@emotion/react";
+// COMPONENTS
+import { Counter } from "../motion/Counter";
 
 export default function SumBoard({
   text = "This is sum board that Minsooni made hehe. You are welcome",
@@ -14,9 +17,9 @@ export default function SumBoard({
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        minWidth: "25rem",
+        minWidth: { xs: "15rem", sm: "20rem", md: "25rem" },
         maxWidth: "27rem",
-        minHeight: "6rem",
+        minHeight: { xs: "4rem", sm: "5rem", md: "6rem" },
         maxHeight: "7rem",
         bgcolor: isSub ? palette.secondary.main : palette.primary.dark,
         borderRadius: "7px",
@@ -29,6 +32,7 @@ export default function SumBoard({
         sx={{
           color: "gray",
           maxWidth: "11rem",
+          fontSize: { xs: "0.8rem", md: "1rem" },
           overflowWrap: "anywhere",
           overflow: "auto",
         }}
@@ -40,17 +44,17 @@ export default function SumBoard({
           color: "white",
           maxWidth: "14rem",
           fontWeight: "700",
-          fontSize: "2rem",
+          fontSize: { xs: "1.7rem", md: "2rem" },
           margin: "auto 0",
         }}
       >
-        ${" "}
-        {parseInt(sumOfMoney)
+        $ <Counter targetNumber={parseInt(sumOfMoney)} />
+        {/* {parseInt(sumOfMoney)
           ? parseInt(sumOfMoney).toLocaleString("en", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })
-          : 0}
+          : 0} */}
       </Typography>
     </Box>
   );
