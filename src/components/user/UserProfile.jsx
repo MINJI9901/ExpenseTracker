@@ -8,26 +8,47 @@ import {
   Button,
   TextField,
   Avatar,
+  Chip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 // CONTEXTS
 import { UserContext } from "@/context/UserContext";
 import { ProfileContext } from "@/context/ProfileContext";
 // COMPONENTS
 import PasswordForm from "./PasswordForm";
+import PopupBox from "../notification/PopupBox";
 // HOOKS
 import { getUser, updateUserProfile } from "@/lib/userApi";
+import { deleteUser } from "@/app/login/actions";
+import { toast } from "react-toastify";
+import { ToastMsg } from "../notification/ToastMsg";
+// SUPABASE
+// import { createClient } from "@/utils/supabase/client";
 
 export default function UserProfile() {
   console.log("render for Profile");
   const { palette } = useTheme();
 
+  const blockName = ["name", "email"];
+
   const { user, setUser } = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(ProfileContext);
 
-  const [openInput, setOpenInput] = useState({ name: false, password: false });
+  const [openInput, setOpenInput] = useState({ name: false });
+  const [openPopup, setOpenPopup] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+  // To check whether a user logged in using social authentication or using email/password
+  const [provider, setProvider] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setProvider(user.app_metadata.provider);
+      console.log("provider: ", user.app_metadata.provider);
+    }
+  }, [user]);
 
   // OPEN INPUT TO EDIT INFORMATION
   const handleOpenInput = (field) => {
@@ -46,10 +67,8 @@ export default function UserProfile() {
   // TO REFLECT NEWLY SELECTED IMAGE FOR PROFILE PICTURE
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-
     // Convert file into url to show preview
     const objectUrl = URL.createObjectURL(file);
-
     // FileReader to read and convert file into buffer
     const reader = new FileReader();
 
@@ -83,12 +102,34 @@ export default function UserProfile() {
       };
     }
 
-    console.log("body for user profile: ", body);
-
     const userProfile = await updateUserProfile(user.id, body);
-
-    console.log(userProfile);
+    setOpenInput((prev) => ({ ...prev, name: false }));
   };
+
+  // TO DELETE ACCOUNT
+  const handleDeleteAccount = async () => {
+    // const supabase = createClient();
+    // const { data, error } = supabase.auth.admin.deleteUser(user.id);
+    // console.log(data);
+    const res = await deleteUser(user.id);
+  };
+
+  const socialBadge =
+    provider !== "email" ? (
+      <Chip
+        label={`${provider.toUpperCase()} LOGIN`}
+        size="small"
+        sx={{
+          position: "absolute",
+          right: 0,
+          top: "0.2rem",
+          bgcolor: palette.info.main,
+          color: "white",
+        }}
+      />
+    ) : (
+      ""
+    );
 
   return (
     <Box
@@ -99,6 +140,16 @@ export default function UserProfile() {
       padding={"2rem"}
       margin={"4rem auto"}
     >
+      {openPopup ? (
+        <PopupBox
+          title={"Are you sure?"}
+          msg={"You cannot restore a deleted account again"}
+          noFn={() => setOpenPopup(false)}
+          yesFn={handleDeleteAccount}
+        />
+      ) : (
+        ""
+      )}
       <Box width={"90%"} margin={"auto"}>
         <Typography
           variant="h1"
@@ -154,30 +205,33 @@ export default function UserProfile() {
                   borderColor={palette.grey[300]}
                   borderRadius={"0.5rem"}
                 >
-                  {openInput[["name", "email"][idx]] ? (
+                  {openInput[blockName[idx]] ? (
                     <TextField
                       variant="standard"
                       size="small"
-                      name={["name", "email"][idx]}
-                      value={userInfo[["name", "email"][idx]]}
+                      name={blockName[idx]}
+                      value={userInfo[blockName[idx]]}
                       sx={{ height: "90%", mx: "0.5rem" }}
                       onChange={handleEditInfo}
                     >
-                      {userInfo[["name", "email"][idx]]}
+                      {/* {userInfo[blockName[idx]]} */}
                     </TextField>
                   ) : (
-                    <Typography
+                    <Box
                       lineHeight={"2rem"}
                       fontSize={"0.9rem"}
                       margin={"auto 0.5rem"}
+                      position={"relative"}
                     >
-                      {userInfo[["name", "email"][idx]]}
-                    </Typography>
+                      {userInfo[blockName[idx]]}
+                      {blockName[idx] === "email" ? socialBadge : ""}
+                    </Box>
                   )}
                 </Box>
               </Box>
             ))}
             <Typography
+              display={provider === "email" ? "block" : "none"}
               color="gray"
               fontSize={"0.9rem"}
               sx={{ cursor: "pointer" }}
@@ -186,7 +240,7 @@ export default function UserProfile() {
               {changePassword ? "Close Form" : "Want to change the password?"}
             </Typography>
             {changePassword ? (
-              <PasswordForm userInfo={userInfo} changeFn={handleEditInfo} />
+              <PasswordForm setCloseForm={setChangePassword} />
             ) : (
               ""
             )}
@@ -205,6 +259,7 @@ export default function UserProfile() {
                 fontSize={"0.9rem"}
                 margin={"auto 0"}
                 sx={{ cursor: "pointer" }}
+                onClick={() => setOpenPopup(true)}
               >
                 Delete Account
               </Typography>

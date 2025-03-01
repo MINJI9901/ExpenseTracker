@@ -8,7 +8,7 @@ export async function GET(req) {
 
   const user = await User.findOne({ userId: userId });
 
-  return Response.json(user);
+  return Response.json(user, { status: 200 });
 }
 
 export async function PATCH(req) {
@@ -38,6 +38,6 @@ export async function PATCH(req) {
 
     await user.save();
 
-    return Response.json(user);
+    return Response.json(user, { status: 200 });
   }
 }

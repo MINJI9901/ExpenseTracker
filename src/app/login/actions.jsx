@@ -115,3 +115,21 @@ export async function logout() {
   revalidatePath("/", "layout");
   redirect("/");
 }
+
+export async function deleteUser(userId) {
+  const supabase = await createClient();
+  //   const supabase = createClient(
+  //     process.env.NEXT_PUBLIC_SUPABASE_URL,
+  //     process.env.SUPABASE_ROLE_KEY,
+  //     { auth: { persistSession: false } }
+  //   );
+
+  const { data, error } = await supabase.auth.admin.deleteUser(userId);
+
+  if (error) {
+    console.log(error);
+    return error;
+  }
+
+  redirect("/login");
+}

@@ -1,12 +1,12 @@
 import { Box, Typography } from "@mui/material";
 
-export function ToastMsg({ title, content }) {
+export function ToastMsg({ title, content, titleColor, contentColor }) {
   return (
     <Box textAlign="center" m="0.5rem">
-      <Typography fontWeight={700} color="black">
+      <Typography fontWeight={700} color={titleColor || "black"}>
         {title}
       </Typography>
-      <Typography>{content}</Typography>
+      <Typography color={contentColor || "black"}>{content}</Typography>
     </Box>
   );
 }

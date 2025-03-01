@@ -12,7 +12,8 @@ import {
   useTheme,
   Divider,
 } from "@mui/material";
-import { Googl, GitHubIcon } from "@mui/icons-material";
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
 // TOAST
 import { ToastContainer, toast } from "react-toastify";
 // SUPABASE
@@ -94,9 +95,7 @@ export default function Login() {
   };
 
   async function signInWith(provider) {
-    console.log("hello,,, this is working?");
     const supabase = createClient();
-    console.log("create client: ", supabase);
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
@@ -104,8 +103,6 @@ export default function Login() {
         redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/callback`,
       },
     });
-
-    console.log(data);
 
     if (error) {
       console.log(`error in signing in with ${provider}: `, error);
@@ -116,7 +113,7 @@ export default function Login() {
     <Box
       sx={{
         margin: "auto",
-        mt: "5rem",
+        my: "5rem",
         display: "flex",
         justifyContent: "center",
         width: { xs: "80%", sm: "60%", md: "50%" },
@@ -214,7 +211,11 @@ export default function Login() {
             }}
             onClick={() => signInWith("google")}
           >
-            Sign in with Google <Google />
+            Sign in with Google{" "}
+            <GoogleIcon
+              fontSize="3rem"
+              sx={{ color: palette.success.dark, ml: "0.2rem" }}
+            />
           </Button>
           <Button
             fullWidth
@@ -222,7 +223,11 @@ export default function Login() {
             sx={{ bgcolor: palette.grey[200] }}
             onClick={() => signInWith("github")}
           >
-            Sign in with GitHub <GitHubIcon />
+            Sign in with GitHub{" "}
+            <GitHubIcon
+              fontSize="3rem"
+              sx={{ color: palette.success.dark, ml: "0.2rem" }}
+            />
           </Button>
         </Box>
       </Box>

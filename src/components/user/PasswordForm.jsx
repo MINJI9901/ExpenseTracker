@@ -1,9 +1,15 @@
 import { useContext, useState } from "react";
+// MUI
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+// SUPABASE
 import { createClient } from "@/utils/supabase/client";
+// CONTEXTS
 import { ProfileContext } from "@/context/ProfileContext";
+// COMPONENTS
+import { ToastMsg } from "../notification/ToastMsg";
+import { toast } from "react-toastify";
 
-export default function PasswordForm() {
+export default function PasswordForm({ setCloseForm }) {
   const { palette } = useTheme();
 
   const { userInfo } = useContext(ProfileContext);
@@ -35,7 +41,14 @@ export default function PasswordForm() {
 
       if (signInError) {
         console.log("password doesn't match: ", signInError);
-        return;
+        return toast(
+          <ToastMsg
+            title={"Password Not Matched"}
+            content={"Entered current password is incorrect"}
+            contentColor={palette.error.dark}
+          />,
+          { autoClose: 2000, hideProgressBar: true }
+        );
       }
 
       const { data, error: updateError } = await supabase.auth.updateUser({
@@ -46,6 +59,20 @@ export default function PasswordForm() {
         console.log("problem in changing password: ", updateError);
         return;
       }
+
+      setCloseForm(false);
+
+      return toast(
+        <ToastMsg
+          title={"Password Change Completed!"}
+          content={"Password is changed successfully!"}
+          contentColor={palette.success.dark}
+        />,
+        {
+          autoClose: 2000,
+          hideProgressBar: true,
+        }
+      );
     }
   };
 

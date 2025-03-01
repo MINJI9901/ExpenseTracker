@@ -22,8 +22,6 @@ export const UserProvider = ({ children }) => {
         console.log("Error to get user: ", error);
       }
 
-      console.log("user: ", data?.user);
-
       setUser(data?.user);
     };
 

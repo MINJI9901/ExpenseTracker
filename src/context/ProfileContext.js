@@ -22,10 +22,7 @@ export const ProfileProvider = ({ children }) => {
 
     const { data, error } = await supabase.auth.getUser();
 
-    console.log("user data: ", data);
-
     if (!data?.user?.id) {
-      console.error("User ID not found");
       return;
     }
 
