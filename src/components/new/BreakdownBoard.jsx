@@ -47,38 +47,6 @@ export default function BreakdownBoard({
     }
   };
 
-  // const [dateRange, setDateRange] = useState({
-  //     start: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-  //     end: selectedDate.getMonth() === new Date().getMonth() ? new Date() : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0)
-  // });
-  // const [breakdownData, setBreakdownData] = useState([]);
-  // const [newBreakdownData, setNewBreakdownData] = useState({});
-  // const [value, setValue] = useState(dayjs(selectedDate));
-
-  // const expenseIncomeBreakdown = async () => {
-  //     const data = await getBreakdown(section, dateRange);
-  //     // console.log(breakdownData.length)
-  //     if (isNewAdded) {
-  //         setNewBreakdown(data.filter(item => (
-  //             breakdownData.length > 1 ? !breakdownData.map(item => item._id).includes(item._id) : false
-  //         ))[0]);
-  //         console.log('new breakdown is: ', data.filter(item => {
-  //             console.log(breakdownData.length > 1)
-  //             return breakdownData.length > 1 ? !breakdownData.map(item => item._id).includes(item._id) : false
-  //         }))
-
-  //         setIsNewAdded(false);
-  //     }
-
-  //     setBreakdownData(data);
-  // }
-
-  // useEffect(() => {
-  //     getData();
-
-  //     // PROBLEM TO SOLVE: WHEN UPLOAD NEW DATA WITH DATE DOESN'T CHANGE, IT DOESN'T APPLY
-  // }, [dateRange])
-
   return (
     <Box
       sx={{

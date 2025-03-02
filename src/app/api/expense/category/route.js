@@ -9,10 +9,8 @@ import { authenticateUser } from "@/app/login/actions";
 export async function GET(req) {
   await dbConnection();
   const user = await authenticateUser();
-  console.log("user in GET: ", user);
 
-  // const reqUrl = req.url;
-  // const { searchParams } = new URL(reqUrl);
+  // const { searchParams } = new URL(req.url);
   // const month = parseInt(searchParams.get("month"));
   // const year = parseInt(searchParams.get("year"));
 
@@ -110,8 +108,6 @@ export async function PUT(req) {
 
   const newData = await req.json();
 
-  console.log("newData: ", newData);
-
   const data = await ExpenseCategory.insertMany(newData);
 
   return Response.json(data, { status: 200 });
@@ -128,8 +124,6 @@ export async function DELETE(req) {
       category: deletedCategory,
     });
 
-    console.log("deleted expenses for the category: ", deletedExpenses);
-
     return Response.json(deletedCategory, { status: 200 });
   } else {
     const { categoryId, subCategoryId } = id;
@@ -143,24 +137,6 @@ export async function DELETE(req) {
       "sub_category._id": subCategoryId,
     });
 
-    console.log("deleted expenses for the sub-category: ", deletedExpenses);
-
     return Response.json(category, { status: 200 });
   }
 }
-
-// 'use server'
-
-// import { redirect } from 'next/navigation'
-// import { revalidatePath } from 'next/cache'
-
-// export async function createPost(id: string) {
-//   try {
-//     // Call database
-//   } catch (error) {
-//     // Handle errors
-//   }
-
-//   revalidatePath('/posts') // Update cached posts
-//   redirect(`/post/${id}`) // Navigate to the new post page
-// }

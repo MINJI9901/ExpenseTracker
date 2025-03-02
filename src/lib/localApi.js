@@ -1,10 +1,9 @@
 import { v4 as uuid } from "uuid";
 
-// ACTUAL BREAKDOWN DATABASE (EXPENSE / INCOME)
+// ************* ACTUAL BREAKDOWN DATABASE (EXPENSE / INCOME) *************
 export function getBreakdownLocal(section, date) {
   const breakdownData =
     JSON.parse(localStorage.getItem(`${section.toLowerCase()}Breakdown`)) || [];
-  console.log("get breakdownData: ", breakdownData);
 
   const data = breakdownData.filter((breakdown) => {
     const formattedDate = new Date(breakdown.date);
@@ -32,8 +31,6 @@ export function addBreakdownLocal(section, body) {
 
   breakdownData.push(newBreakdown);
 
-  console.log("added breakdownData: ", breakdownData);
-
   localStorage.setItem(
     `${section.toLowerCase()}Breakdown`,
     JSON.stringify(breakdownData)
@@ -46,10 +43,10 @@ export function updateBreakdownLocal(section, updatedContent) {
   );
 
   breakdownData.forEach((breakdown, idx) => {
-    console.log("idx: ", idx, breakdown._id === updatedContent._id);
+    // console.log("idx: ", idx, breakdown._id === updatedContent._id);
     if (breakdown._id === updatedContent._id) {
       breakdownData[idx] = updatedContent;
-      console.log("idx: ", idx, "updated content: ", updatedContent);
+      // console.log("idx: ", idx, "updated content: ", updatedContent);
     }
   });
 
@@ -76,7 +73,7 @@ export function deleteBreakdownLocal(section, id) {
   );
 }
 
-// CATEGORY DATABASE (EXPENSE / INCOME)
+// ************* CATEGORY DATABASE (EXPENSE / INCOME) *************
 export function getCategoriesLocal(section, date) {
   const categoriesData =
     JSON.parse(localStorage.getItem(`${section.toLowerCase()}Categories`)) ||
@@ -135,8 +132,6 @@ export function addSubCategoryLocal(section, id) {
     }
   });
 
-  console.log("new sub added category: ", categoryData);
-
   localStorage.setItem(
     `${section.toLowerCase()}Categories`,
     JSON.stringify(categoryData)
@@ -147,7 +142,6 @@ export function updatedCategoryLocal(section, id, updatedContent) {
   const categoryData = JSON.parse(
     localStorage.getItem(`${section.toLowerCase()}Categories`)
   );
-  console.log("categoryData for update: ", categoryData);
 
   categoryData.forEach((category) => {
     if (category._id === id) {
@@ -180,7 +174,6 @@ export function addPastDataLocal(section, newData) {
   newData.forEach((data) => {
     categoryData.push({ ...data, _id: uuid() });
   });
-  console.log("last data added categoryData: ", categoryData);
 
   localStorage.setItem(
     `${section.toLowerCase()}Categories`,
@@ -195,14 +188,10 @@ export function deleteCategoryLocal(section, id) {
   const breakdownData =
     JSON.parse(localStorage.getItem(`${section.toLowerCase()}Breakdown`)) || [];
 
-  console.log("categoryData for delete: ", categoryData);
-  console.log("breakdownData for delete: ", breakdownData);
-
   // FOR CATEGORY
   if (typeof id !== "object") {
     // DELETE CATEGORY FROM CATEGORYDATA
     const idx = categoryData.map((category) => category._id).indexOf(id);
-    console.log("idx to delete: ", idx);
 
     categoryData.splice(idx, 1);
 
@@ -224,8 +213,6 @@ export function deleteCategoryLocal(section, id) {
     const idx = category.sub_category
       .map((sub) => sub._id)
       .indexOf(subCategoryId);
-
-    console.log("idx to delete: ", idx);
 
     category.sub_category.splice(idx, 1);
 

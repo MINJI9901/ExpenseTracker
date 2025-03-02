@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-
+// MUI
 import { Grid2, Box, Typography, useTheme } from "@mui/material";
-
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
 
 export default function BarForFigureTable({

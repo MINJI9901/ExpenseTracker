@@ -40,14 +40,11 @@ const pageMenu = {
   Expense: ["Expense", "Income"],
 };
 
-// const pageLinks = { Summary: "/", "Add New": "/new", Plan: "/plan" };
-// const pageLinks = ["/new", "plan"];
-
 export default function NavBar() {
   const { palette } = useTheme();
 
   // const [user, setUser] = useState(null);
-  const [settings, setSettings] = useState(["Login/SignUp"]);
+  const [settings, setSettings] = useState([{ "Login/SignUp": "/login" }]);
   const [anchorElNav, setAnchorElNav] = useState({});
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [menuItems, setMenuItems] = useState(pageMenu);
@@ -56,12 +53,12 @@ export default function NavBar() {
   const { user, setUser } = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(ProfileContext);
 
-  const checkUser = async () => {
-    setSettings(() => (user ? ["Profile", "Logout"] : ["Login/SignUp"]));
-  };
-
   useEffect(() => {
-    checkUser();
+    setSettings(() =>
+      user
+        ? [{ Profile: "/profile" }, { Logout: "/" }]
+        : [{ "Login/SignUp": "/login" }]
+    );
   }, [user]);
 
   const handleOpenNavMenu = (e, page) => {
@@ -82,10 +79,10 @@ export default function NavBar() {
     setAnchorElUser(null);
     const setting = e.target.innerText;
     if (setting == "Logout") {
+      setUser(null);
       const logoutUser = await logout();
       console.log("logoutUser: ", logoutUser);
-      setUser(null);
-      setSettings((prev) => [...prev]);
+      // setSettings((prev) => [...prev]);
     }
   };
 
@@ -252,14 +249,18 @@ export default function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting, index) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settings.map((setting) => (
+                <MenuItem
+                  key={Object.keys(setting)[0]}
+                  onClick={handleCloseUserMenu}
+                >
                   <Typography
                     component={"a"}
-                    href={setting == "Login/SignUp" ? "/login" : "/profile"}
+                    // href={setting == "Login/SignUp" ? "/login" : "/profile"}
+                    href={Object.values(setting)[0]}
                     sx={{ textAlign: "center" }}
                   >
-                    {setting}
+                    {Object.keys(setting)[0]}
                   </Typography>
                 </MenuItem>
               ))}

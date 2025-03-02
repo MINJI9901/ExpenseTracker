@@ -63,8 +63,7 @@ export async function getCategories(section, date) {
       process.env.NEXT_PUBLIC_API_URL
     }/api/${section.toLowerCase()}/category?month=${date.getMonth()}&year=${date.getFullYear()}`
   );
-  console.log("date: ", date);
-  console.log("month: ", date.getMonth(), "year: ", date.getFullYear());
+
   const data = await response.json();
 
   return data;

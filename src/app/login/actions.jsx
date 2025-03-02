@@ -9,7 +9,6 @@ export async function authenticateUser() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
-  console.log("user: ", data || error);
 
   return data?.user || null;
 }
@@ -37,7 +36,7 @@ export async function login(formData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/?redirected=true");
 }
 
 export async function signup(formData) {
@@ -50,7 +49,7 @@ export async function signup(formData) {
     password: formData.get("password"),
   };
 
-  console.log("signup data: ", data);
+  // console.log("signup data: ", data);
 
   const { error } = await supabase.auth.signUp(data);
 
@@ -59,7 +58,7 @@ export async function signup(formData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/?redirected=true");
 }
 
 // export async function handleSignInWithGoogle(response) {
@@ -76,9 +75,7 @@ export async function signup(formData) {
 //   console.log(data);
 // }
 export async function signInWith(provider) {
-  console.log("hello,,, this is working?");
   const supabase = await createClient();
-  console.log("create client: ", supabase);
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
@@ -87,24 +84,13 @@ export async function signInWith(provider) {
     },
   });
 
-  console.log(data);
-
   if (error) {
     console.log(`error in signing in with ${provider}: `, error);
   }
 }
 
-// export const signInWithGoogle = await signInWith("google");
-
 export async function logout() {
   const supabase = await createClient();
-
-  // const data = {
-  //   email: formData.get('email'),
-  //   password: formData.get('password'),
-  // }
-
-  // console.log('logout data: ', data)
 
   const { error } = await supabase.auth.signOut();
 
@@ -118,11 +104,6 @@ export async function logout() {
 
 export async function deleteUser(userId) {
   const supabase = await createClient();
-  //   const supabase = createClient(
-  //     process.env.NEXT_PUBLIC_SUPABASE_URL,
-  //     process.env.SUPABASE_ROLE_KEY,
-  //     { auth: { persistSession: false } }
-  //   );
 
   const { data, error } = await supabase.auth.admin.deleteUser(userId);
 

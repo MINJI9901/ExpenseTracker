@@ -10,10 +10,8 @@ export async function GET(req) {
   await dbConnection();
   const user = await authenticateUser();
 
-  const reqUrl = req.url;
-  const { searchParams } = new URL(reqUrl);
-  const month = parseInt(searchParams.get("month"));
-  const year = parseInt(searchParams.get("year"));
+  const month = parseInt(req.nextUrl.searchParams.get("month"));
+  const year = parseInt(req.nextUrl.searchParams.get("year"));
 
   const startOfMonth = new Date(year, month, 1, 9, 0, 0);
   const endOfMonth = new Date(year, month + 1, 1, 9, 0, 0);
@@ -39,8 +37,6 @@ export async function POST(req) {
   if (searchParams.get("month")) {
     const month = parseInt(searchParams.get("month"));
     const year = parseInt(searchParams.get("year"));
-
-    console.log(searchParams);
 
     const newCategory = new IncomeCategory({
       category: "",
@@ -122,8 +118,6 @@ export async function DELETE(req) {
       category: deletedCategory,
     });
 
-    console.log("deleted income for the category: ", deletedIncome);
-
     return Response.json(deletedCategory, { status: 200 });
   } else {
     const { categoryId, subCategoryId } = id;
@@ -136,8 +130,6 @@ export async function DELETE(req) {
     const deletedIncome = await Income.deleteMany({
       "sub_category._id": subCategoryId,
     });
-
-    console.log("deleted income for the sub-category: ", deletedIncome);
 
     return Response.json(category, { status: 200 });
   }

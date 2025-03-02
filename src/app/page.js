@@ -1,5 +1,6 @@
 "use client";
 import { useState, useContext, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { Box } from "@mui/material";
 // CONTEXTS
@@ -15,6 +16,8 @@ import CategoryMenu from "@/components/generic/CategoryMenu";
 import FigureTable from "@/components/main/FigureTable";
 import Echart from "@/components/echarts/Echart";
 import SummaryBox from "@/components/main/SummaryBox";
+// SUPABASE
+import { createClient } from "@/utils/supabase/client";
 
 const now = new Date();
 
@@ -24,10 +27,14 @@ let expenseCategoryData;
 let incomeCategoryData;
 
 export default function Home() {
-  console.log("renders");
+  // console.log("renders");
   // CONTEXTS
   const { section } = useContext(FilterContext);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  // TO CHECK WHETHER IT IS REDIRECTED
+  const searchParams = useSearchParams();
+  const isRedirected = searchParams.get("redirected") === "true";
 
   // CURRENT SECTION CONDITION
   const isExpense = section == "Expense";
@@ -160,9 +167,25 @@ export default function Home() {
     configureData("all");
   };
 
+  // TO UPDATE USER AFTER REDIRECTING FROM LOGIN
+  const getAndSetUser = async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+      return false;
+    }
+
+    setUser(data?.user);
+  };
+
   useEffect(() => {
     getData();
-  }, [section, user]);
+
+    if (isRedirected) {
+      getAndSetUser();
+    }
+  }, [section]);
 
   const summaryBox = (
     <SummaryBox
@@ -259,24 +282,6 @@ export default function Home() {
           mx="auto"
         >
           {summaryBox}
-          {/* <SummaryBox
-            data={[
-              {
-                label: isExpense ? "Budget" : "Expected Amount",
-                amount: Object.values(plannedAmount).reduce(
-                  (prev, curr) => prev + parseFloat(curr),
-                  0
-                ),
-              },
-              {
-                label: isExpense ? "Spending" : "Earning",
-                amount: Object.values(usedAmount).reduce(
-                  (prev, curr) => prev + parseFloat(curr),
-                  0
-                ),
-              },
-            ]}
-          /> */}
         </Box>
       </Box>
     </>

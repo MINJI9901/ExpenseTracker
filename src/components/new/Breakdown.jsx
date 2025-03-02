@@ -56,8 +56,6 @@ export default function Breakdown({
   const categoryIndex = categoryData
     .map((cate) => cate._id)
     .indexOf(category._id);
-  //   const subCategoryIndex =
-  //     -category.sub_category.map((sub) => sub._id).indexOf(sub_category._id) + 10;
 
   const month = new Date(date).getMonth() + 1;
   const day = new Date(date).getDate();

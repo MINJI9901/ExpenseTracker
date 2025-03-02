@@ -29,7 +29,7 @@ import { ToastMsg } from "../notification/ToastMsg";
 // import { createClient } from "@/utils/supabase/client";
 
 export default function UserProfile() {
-  console.log("render for Profile");
+  // console.log("render for Profile");
   const { palette } = useTheme();
 
   const blockName = ["name", "email"];
@@ -46,7 +46,6 @@ export default function UserProfile() {
   useEffect(() => {
     if (user) {
       setProvider(user.app_metadata.provider);
-      console.log("provider: ", user.app_metadata.provider);
     }
   }, [user]);
 
@@ -73,12 +72,10 @@ export default function UserProfile() {
     const reader = new FileReader();
 
     reader.readAsArrayBuffer(file);
-    console.log("reader: ", reader);
 
     reader.onloadend = () => {
       //   const buffer = Buffer.from(new Uint8Array(reader.result));
       const buffer = Buffer.from(reader.result);
-      console.log("buffer: ", buffer);
 
       setUserInfo((prev) => ({
         ...prev,

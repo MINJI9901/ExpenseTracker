@@ -40,7 +40,6 @@ export default function BudgetBox({
       ...prev,
       [fieldName]: value,
     }));
-    console.log(subCategoryInput);
   };
 
   // SAVE MODIFIED SUB-CATEGORY DATA
@@ -53,7 +52,6 @@ export default function BudgetBox({
           subCategoryInput
         );
       } else {
-        console.log(subCategoryInput);
         updatedCategoryLocal(section, categoryId, subCategoryInput);
       }
 

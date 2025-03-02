@@ -2,7 +2,6 @@
 import { useTheme } from "@emotion/react";
 // MUI
 import { Box, Typography } from "@mui/material";
-// import { useTheme } from "@mui/material";
 // COMPONENTS
 import { Counter } from "../motion/Counter";
 
@@ -49,12 +48,6 @@ export default function SumBoard({
         }}
       >
         $ <Counter targetNumber={parseInt(sumOfMoney)} />
-        {/* {parseInt(sumOfMoney)
-          ? parseInt(sumOfMoney).toLocaleString("en", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          : 0} */}
       </Typography>
     </Box>
   );

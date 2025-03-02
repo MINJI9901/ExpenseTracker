@@ -11,19 +11,19 @@ export async function GET(req) {
   return Response.json(user, { status: 200 });
 }
 
-export async function PATCH(req) {
+export async function POST(req) {
   await dbConnection();
 
   const { userId, email, name, image } = await req.json();
-  console.log("userId: ", userId);
-  console.log("body: ", email, name, image);
+  // console.log("userId: ", userId);
+  // console.log("body: ", email, name, image);
 
   const user = await User.findOne({ userId: userId });
 
   if (user) {
     user.name = name ? name : "";
     image ? (user.image = image) : "";
-    console.log("edited user: ", user);
+    // console.log("edited user: ", user);
 
     await user.save();
 

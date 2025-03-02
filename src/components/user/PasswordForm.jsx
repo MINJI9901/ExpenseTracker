@@ -40,7 +40,7 @@ export default function PasswordForm({ setCloseForm }) {
         });
 
       if (signInError) {
-        console.log("password doesn't match: ", signInError);
+        // console.log("password doesn't match: ", signInError);
         return toast(
           <ToastMsg
             title={"Password Not Matched"}

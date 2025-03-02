@@ -67,26 +67,6 @@ export default function MobileNavBar() {
               href={page.link}
             />
           ))}
-          {/* <BottomNavigationAction
-            label="Figure"
-            icon={<BarChartIcon />}
-            href="/"
-          />
-          <BottomNavigationAction
-            label="New"
-            icon={<CreateIcon />}
-            href="/new"
-          />
-          <BottomNavigationAction
-            label="Plan"
-            icon={<EditNoteIcon />}
-            href="/plan"
-          />
-          <BottomNavigationAction
-            label="User"
-            icon={<AccountCircleIcon />}
-            href="/login"
-          /> */}
         </BottomNavigation>
       </Box>
     </>

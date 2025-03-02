@@ -7,7 +7,6 @@ import expense from "@/models/expense";
 
 export async function GET(req) {
   await dbConnection();
-  console.log("Expense Database: ", Expense);
   const user = await authenticateUser();
 
   const startDate = req.nextUrl.searchParams.get("start");

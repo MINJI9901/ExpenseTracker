@@ -20,7 +20,7 @@ import { getCategoriesLocal, getBreakdownLocal } from "@/lib/localApi";
 const now = new Date();
 
 const Page = () => {
-  console.log("renders for NEW");
+  // console.log("renders for NEW");
   const { section } = useContext(FilterContext);
   const { user } = useContext(UserContext);
 
@@ -55,7 +55,6 @@ const Page = () => {
   };
 
   const getCategoryData = async () => {
-    console.log("user in New: ", user);
     if (user) {
       const data = await getCategories(section, dateRange.start);
 

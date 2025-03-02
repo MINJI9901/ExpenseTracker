@@ -1,6 +1,6 @@
 "use client";
 import { useState, useContext } from "react";
-
+// MUI
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import {
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -44,8 +43,6 @@ export default function MonthPicker({ setMonthlyDate }) {
       setMonthlyDate(new Date(`${year}-${month}-01`));
     }
 
-    console.log("month: ", month);
-
     setIsOpen(null);
   };
 
@@ -69,7 +66,6 @@ export default function MonthPicker({ setMonthlyDate }) {
         }}
         open={Boolean(isOpen)}
         onClose={handleClose}
-        // sx={{ display: "{ xs: "block", md: "block" }" }}
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DateCalendar"]}>

@@ -8,20 +8,20 @@ export async function getUser(userId) {
   return data;
 }
 
-export async function addUser(userId) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-    method: "POST",
-    body: JSON.stringify({ userId: userId }),
-  });
+// export async function addUser(userId) {
+//   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
+//     method: "POST",
+//     body: JSON.stringify({ userId: userId }),
+//   });
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  return data;
-}
+//   return data;
+// }
 
 export async function updateUserProfile(userId, body) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
-    method: "PATCH",
+    method: "POST",
     body: JSON.stringify({ ...body, userId: userId }),
   });
 

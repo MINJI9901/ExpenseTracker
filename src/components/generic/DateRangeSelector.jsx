@@ -1,12 +1,15 @@
 "use client";
 import { useState, useContext, useEffect, useMemo } from "react";
+// MUI DATE PICKER
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
-import { FilterContext } from "@/context/filterContext";
+// MUI
 import { Typography, useTheme } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+// CONTEXTS
+import { FilterContext } from "@/context/filterContext";
 
 const now = new Date();
 

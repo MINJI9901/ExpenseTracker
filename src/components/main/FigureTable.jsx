@@ -1,25 +1,11 @@
 "use client";
 import { useContext } from "react";
-
+// MUI
 import { Box, Container, Grid2, Typography, useTheme } from "@mui/material";
-
-import BarForFigureTable from "./BarForFigureTable";
+// CONTEXTS
 import { FilterContext } from "@/context/filterContext";
-
-const month = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+// COMPONENTS
+import BarForFigureTable from "./BarForFigureTable";
 
 export default function FigureTable({ plannedAmount, usedAmount }) {
   const { palette } = useTheme();
