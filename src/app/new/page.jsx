@@ -27,7 +27,7 @@ const Page = () => {
   const [breakdownData, setBreakdownData] = useState([]);
   const [newBreakdownData, setNewBreakdownData] = useState({});
   const [categoryData, setCategoryData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [dateRange, setDateRange] = useState({
     start: new Date(now.getFullYear(), now.getMonth(), 1),
@@ -35,7 +35,6 @@ const Page = () => {
   });
 
   const getBreakdownData = async (isNewAdded) => {
-    setLoading(true);
     let data;
 
     if (user) {
@@ -54,7 +53,7 @@ const Page = () => {
     } else setNewBreakdownData({});
 
     setBreakdownData([...data]);
-    setLoading(true);
+    setLoading(false);
   };
 
   const getCategoryData = async () => {

@@ -157,7 +157,7 @@ export default function BreakdownBoard({
             fontSize={"1.2rem"}
             mt={"15%"}
           >
-            {loading ? "No data" : "Loading..."}
+            {loading ? "Loading..." : "No data"}
           </Typography>
         )}
       </Box>

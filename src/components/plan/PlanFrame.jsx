@@ -44,7 +44,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   const { user, setUser } = useContext(UserContext);
 
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   //   const checkUser = async () => {
   //     const supabase = createClient();
@@ -56,7 +56,6 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
 
   // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
-    setLoading(true);
     let data = [];
     // console.log("user in Plan: ", user);
     if (user) {
@@ -235,7 +234,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
               fontSize={"1.2rem"}
               margin={"auto"}
             >
-              {loading ? "No data" : "Loading..."}
+              {loading ? "Loading..." : "No Data"}
             </Typography>
           )}
         </Grid2>
