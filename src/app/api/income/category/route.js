@@ -31,18 +31,15 @@ export async function POST(req) {
   await dbConnection();
   const user = await authenticateUser();
 
-  const reqUrl = req.url;
-  const { searchParams } = new URL(reqUrl);
-
   if (searchParams.get("month")) {
-    const month = parseInt(searchParams.get("month"));
-    const year = parseInt(searchParams.get("year"));
+    const month = parseInt(req.nextUrl.searchParams.get("month"));
+    const year = parseInt(req.nextUrl.searchParams.get("year"));
 
     const newCategory = new IncomeCategory({
-      category: "",
+      category: " ",
       sub_category: [
         {
-          name: "",
+          name: " ",
           expected_amount: 0,
         },
       ],
@@ -58,7 +55,7 @@ export async function POST(req) {
     const newSubCategory = await IncomeCategory.findByIdAndUpdate(id, {
       $push: {
         sub_category: {
-          name: "",
+          name: " ",
           expected_amount: 0,
         },
       },

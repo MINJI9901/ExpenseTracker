@@ -36,7 +36,7 @@ import { createClient } from "@/utils/supabase/client";
 
 export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   let totalAmount = 0;
-  console.log("renders");
+  // console.log("renders");
   const { palette } = useTheme();
 
   const filters = useContext(FilterContext);
@@ -59,7 +59,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
     let data = [];
-    console.log("user in Plan: ", user);
+    // console.log("user in Plan: ", user);
     if (user) {
       data = await getCategories(section, monthlyDate);
       // WHEN IT'S NOT AN AUTHENTICATED USER

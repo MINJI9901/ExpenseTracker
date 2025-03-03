@@ -64,7 +64,7 @@ export async function POST(req) {
     const newSubCategory = await ExpenseCategory.findByIdAndUpdate(id, {
       $push: {
         sub_category: {
-          name: "",
+          name: " ",
           budget: 0,
         },
       },
