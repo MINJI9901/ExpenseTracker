@@ -32,10 +32,6 @@ export default function Home() {
   const { section } = useContext(FilterContext);
   const { user, setUser } = useContext(UserContext);
 
-  // TO CHECK WHETHER IT IS REDIRECTED
-  const searchParams = useSearchParams();
-  const isRedirected = searchParams.get("redirected") === "true";
-
   // CURRENT SECTION CONDITION
   const isExpense = section == "Expense";
 
@@ -181,6 +177,10 @@ export default function Home() {
 
   useEffect(() => {
     getData();
+
+    // TO CHECK WHETHER IT IS REDIRECTED
+    const searchParams = useSearchParams();
+    const isRedirected = searchParams.get("redirected") === "true";
 
     if (isRedirected) {
       getAndSetUser();

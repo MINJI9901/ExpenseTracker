@@ -15,6 +15,11 @@ export const UserProvider = ({ children }) => {
   const getAndSetUser = async () => {
     const supabase = createClient();
 
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (!sessionData.session) {
+      return;
+    }
+
     const { data, error } = await supabase.auth.getUser();
 
     if (error) {

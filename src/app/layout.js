@@ -38,32 +38,40 @@ export const metadata = {
   },
 };
 
+// const isClient = typeof window !== "undefined";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
         <meta name="referrer" content="strict-origin-when-cross-origin" />
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-        />
       </head>
 
       <body
         className={`${signika.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="afterInteractive"
+        />
         <UserProvider>
           <ProfileProvider>
             <FilterProvider>
-              <ThemeProvider>
-                <Box display={{ xs: "none", sm: "block" }}>
+              <ThemeProvider key="mui">
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                  }}
+                >
                   <NavBar />
                 </Box>
                 {children}
                 <ToastContainer position="top-center" autoClose={5000} />
-                {/* // render echarts option. */}
-                {/* <ReactECharts option={this.getOption()} /> */}
-                <Box display={{ xs: "none", sm: "block" }}>
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                  }}
+                >
                   <Footer />
                 </Box>
                 <MobileNavBar />
