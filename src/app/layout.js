@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Signika } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -65,7 +66,7 @@ export default function RootLayout({ children }) {
                 >
                   <NavBar />
                 </Box>
-                {children}
+                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
                 <ToastContainer position="top-center" autoClose={5000} />
                 <Box
                   sx={{

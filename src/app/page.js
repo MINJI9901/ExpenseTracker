@@ -43,6 +43,10 @@ export default function Home() {
   let plannedAmountPerCategory = {};
   let usedAmountPerCategory = {};
 
+  // TO CHECK WHETHER IT IS REDIRECTED
+  const searchParams = useSearchParams();
+  const isRedirected = searchParams.get("redirected") === "true";
+
   // STATES
   const [dateRange, setDateRange] = useState({
     start: new Date(now.getFullYear(), now.getMonth(), 1),
@@ -177,10 +181,6 @@ export default function Home() {
 
   useEffect(() => {
     getData();
-
-    // TO CHECK WHETHER IT IS REDIRECTED
-    const searchParams = useSearchParams();
-    const isRedirected = searchParams.get("redirected") === "true";
 
     if (isRedirected) {
       getAndSetUser();
