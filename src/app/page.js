@@ -180,12 +180,14 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getData();
-
     if (isRedirected) {
       getAndSetUser();
     }
-  }, [section]);
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, [section, user]);
 
   const summaryBox = (
     <SummaryBox

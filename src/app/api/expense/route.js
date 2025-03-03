@@ -9,6 +9,8 @@ export async function GET(req) {
   await dbConnection();
   const user = await authenticateUser();
 
+  console.log("user id: ", user.id);
+
   const startDate = req.nextUrl.searchParams.get("start");
   const endDate = req.nextUrl.searchParams.get("end");
 
