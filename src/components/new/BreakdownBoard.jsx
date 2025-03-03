@@ -19,6 +19,7 @@ export default function BreakdownBoard({
   breakdownData,
   newBreakdownData,
   categoryData,
+  loading,
 }) {
   const { section, selectedDate } = useContext(FilterContext);
   const { palette } = useTheme();
@@ -156,7 +157,7 @@ export default function BreakdownBoard({
             fontSize={"1.2rem"}
             mt={"15%"}
           >
-            No data
+            {loading ? "No data" : "Loading..."}
           </Typography>
         )}
       </Box>

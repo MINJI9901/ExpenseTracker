@@ -40,14 +40,11 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
   // console.log("renders");
   const { palette } = useTheme();
 
-  const filters = useContext(FilterContext);
-  const { section } = filters;
+  const { section } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [categories, setCategories] = useState([]);
-  //   const [importedCategories, setImportedCategories] = useState([]);
-  //   const [user, setUser] = useState(null);
-  //   User Context
-  const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   //   const checkUser = async () => {
   //     const supabase = createClient();
@@ -59,6 +56,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
 
   // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
+    setLoading(true);
     let data = [];
     // console.log("user in Plan: ", user);
     if (user) {
@@ -80,6 +78,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
 
     setCategories(data);
     setSumOfAmount(totalAmount);
+    setLoading(false);
   };
 
   // useEffecs
@@ -236,7 +235,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
               fontSize={"1.2rem"}
               margin={"auto"}
             >
-              No data
+              {loading ? "No data" : "Loading..."}
             </Typography>
           )}
         </Grid2>
