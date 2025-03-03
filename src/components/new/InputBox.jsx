@@ -32,7 +32,7 @@ export default function InputBox({
   isNumber = false,
   dateRange,
 }) {
-  const { selectedDate, setSelectedDate } = useContext(FilterContext);
+  // const { selectedDate, setSelectedDate } = useContext(FilterContext);
   const [date, setDate] = useState(new Date());
   const [isFilled, setIsFilled] = useState(false);
 
@@ -60,8 +60,8 @@ export default function InputBox({
 
   const handleDatePicking = (e) => {
     setNewBreakdown((prev) => ({ ...prev, date: e.$d }));
-    setSelectedDate(e.$d);
     setDate(e.$d);
+    console.log("data picking in NEW: ", e.$d);
   };
 
   const handleInput = (e) => {
