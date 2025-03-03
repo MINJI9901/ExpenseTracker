@@ -128,25 +128,36 @@ export default function BreakdownBoard({
         </Typography>
       </Box>
       <Box sx={{ overflowY: "auto", height: "83%" }}>
-        {displayedData.map((breakdown) =>
-          newBreakdownData && newBreakdownData._id === breakdown._id ? (
-            <Breakdown
-              key={breakdown._id}
-              breakdown={breakdown}
-              getBreakdownData={getBreakdownData}
-              categoryData={categoryData}
-              handleFilter={handleFilter}
-              isNew={true}
-            ></Breakdown>
-          ) : (
-            <Breakdown
-              key={breakdown._id}
-              breakdown={breakdown}
-              getBreakdownData={getBreakdownData}
-              categoryData={categoryData}
-              handleFilter={handleFilter}
-            ></Breakdown>
+        {displayedData.length ? (
+          displayedData.map((breakdown) =>
+            newBreakdownData && newBreakdownData._id === breakdown._id ? (
+              <Breakdown
+                key={breakdown._id}
+                breakdown={breakdown}
+                getBreakdownData={getBreakdownData}
+                categoryData={categoryData}
+                handleFilter={handleFilter}
+                isNew={true}
+              ></Breakdown>
+            ) : (
+              <Breakdown
+                key={breakdown._id}
+                breakdown={breakdown}
+                getBreakdownData={getBreakdownData}
+                categoryData={categoryData}
+                handleFilter={handleFilter}
+              ></Breakdown>
+            )
           )
+        ) : (
+          <Typography
+            textAlign={"center"}
+            color="gray"
+            fontSize={"1.2rem"}
+            mt={"15%"}
+          >
+            No data
+          </Typography>
         )}
       </Box>
       <Box

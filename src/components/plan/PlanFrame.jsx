@@ -11,6 +11,7 @@ import {
   useTheme,
   Checkbox,
   FormControlLabel,
+  Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -220,13 +221,24 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
           container
           sx={{ flexWrap: "nowrap", overflowX: "auto" }}
         >
-          {categories.map((category) => (
-            <CategoryCard
-              key={category._id}
-              categoryData={category}
-              fetchCategories={fetchCategories}
-            />
-          ))}
+          {categories.length ? (
+            categories.map((category) => (
+              <CategoryCard
+                key={category._id}
+                categoryData={category}
+                fetchCategories={fetchCategories}
+              />
+            ))
+          ) : (
+            <Typography
+              textAlign={"center"}
+              color="gray"
+              fontSize={"1.2rem"}
+              margin={"auto"}
+            >
+              No data
+            </Typography>
+          )}
         </Grid2>
         <Grid2
           size={{ xs: 0, sm: 1, lg: 0.5 }}
