@@ -223,41 +223,44 @@ export default function Home() {
         </Box>
       </Box>
       <Box
-        display={{ xs: "inline-block", md: "flex" }}
+        display={"flex"}
+        flexDirection={{ xs: "column", md: "row" }}
         justifyContent="space-between"
+        gap={3}
         margin="1rem"
       >
-        <Box
+        {/* <Box
           display={{ xs: "flex", md: "block" }}
           justifyContent={"center"}
           alignContent={"center"}
           gap={2}
-        >
-          <Box justifySelf="center" alignSelf={"center"}>
-            <SumBoard
-              text={`Total ${section}\nFor ${dateDifference} Days`}
-              sumOfMoney={
-                isExpense ? sumOfMoney.expenseSum : sumOfMoney.incomeSum
-              }
-            />
-            <SumBoard
-              isSub={true}
-              text={`Total ${
-                isExpense ? "Earnings" : "Spendings"
-              }\nFor ${dateDifference} Days`}
-              sumOfMoney={
-                isExpense ? sumOfMoney.incomeSum : sumOfMoney.expenseSum
-              }
-            />
-          </Box>
-          <Box
-            display={{ xs: "block", md: "none" }}
-            width={{ xs: "80%", sm: "60%" }}
-            height={"10rem"}
-          >
-            {summaryBox}
-          </Box>
+        > */}
+        <Box justifySelf="center" alignSelf={"center"}>
+          <SumBoard
+            text={`Total ${section}\nFor ${dateDifference} Days`}
+            sumOfMoney={
+              isExpense ? sumOfMoney.expenseSum : sumOfMoney.incomeSum
+            }
+          />
+          <SumBoard
+            isSub={true}
+            text={`Total ${
+              isExpense ? "Earnings" : "Spendings"
+            }\nFor ${dateDifference} Days`}
+            sumOfMoney={
+              isExpense ? sumOfMoney.incomeSum : sumOfMoney.expenseSum
+            }
+          />
         </Box>
+        <Box
+          display={{ xs: "block", md: "none" }}
+          width={{ xs: "80%", sm: "60%" }}
+          height={"8rem"}
+          margin={"auto"}
+        >
+          {summaryBox}
+        </Box>
+        {/* </Box> */}
         <FigureTable plannedAmount={plannedAmount} usedAmount={usedAmount} />
       </Box>
       <Box

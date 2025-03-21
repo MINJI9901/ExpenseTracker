@@ -33,14 +33,22 @@ export default function FigureTable({ plannedAmount, usedAmount }) {
             overflowY: "auto",
           }}
         >
-          {Object.keys(plannedAmount).map((category) => (
-            <BarForFigureTable
-              key={category}
-              categoryName={category}
-              plannedAmount={plannedAmount[category]}
-              usedAmount={usedAmount[category]}
-            />
-          ))}
+          {Object.keys(plannedAmount).length ? (
+            Object.keys(plannedAmount).map((category) => (
+              <BarForFigureTable
+                key={category}
+                categoryName={category}
+                plannedAmount={plannedAmount[category]}
+                usedAmount={usedAmount[category]}
+              />
+            ))
+          ) : (
+            <>
+              <BarForFigureTable isSkeleton={true} skeletonWidth="70%" />
+              <BarForFigureTable isSkeleton={true} skeletonWidth="40%" />
+              <BarForFigureTable isSkeleton={true} skeletonWidth="80%" />
+            </>
+          )}
         </Grid2>
       </Box>
     </Container>
