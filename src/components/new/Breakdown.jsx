@@ -6,27 +6,11 @@ import { ColorContext } from "@/context/ColorContext";
 import { UserContext } from "@/context/UserContext";
 
 // MUI
-import {
-  Box,
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { Box, Typography, useTheme } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import DoneIcon from "@mui/icons-material/Done";
-import CancelIcon from "@mui/icons-material/Cancel";
-import dayjs from "dayjs";
-import { Cancel } from "@mui/icons-material";
 
 // COMPONENTs
-import CategorySelectBox from "./CategorySelectBox";
 import EditBreakdown from "./EditBreakdown";
 
 // HOOKS
@@ -89,9 +73,9 @@ export default function Breakdown({
     <>
       <Box
         sx={{
+          width: "100%",
           display: "flex",
           justifyContent: "space-evenly",
-          overflow: "auto",
           textAlign: "center",
           borderRadius: "5px",
           bgcolor: "white",
@@ -102,7 +86,7 @@ export default function Breakdown({
       >
         <Typography
           sx={{
-            width: { xs: "10rem", md: "10%" },
+            width: "10%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
@@ -112,7 +96,7 @@ export default function Breakdown({
         </Typography>
         <Typography
           sx={{
-            width: { xs: "10rem", md: "20%" },
+            width: "20%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
@@ -122,7 +106,7 @@ export default function Breakdown({
         </Typography>
         <Typography
           sx={{
-            width: { xs: "10rem", md: "10%" },
+            width: "10%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
@@ -132,7 +116,7 @@ export default function Breakdown({
         </Typography>
         <Typography
           sx={{
-            width: { xs: "10rem", md: "20%" },
+            width: "20%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
@@ -145,7 +129,7 @@ export default function Breakdown({
         </Typography>
         <Typography
           sx={{
-            width: { xs: "10rem", md: "20%" },
+            width: "20%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",
@@ -156,7 +140,7 @@ export default function Breakdown({
         </Typography>
         <Typography
           sx={{
-            width: { xs: "10rem", md: "10%" },
+            width: "10%",
             mx: { xs: "1rem", md: 0 },
             overflowX: "auto",
             textWrap: "nowrap",

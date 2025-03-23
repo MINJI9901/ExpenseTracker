@@ -91,15 +91,16 @@ export default function EditBreakdown({
           textAlign: "center",
           borderRadius: "5px",
           bgcolor: "#f2ece9",
+          color: "gray",
           padding: "0.5rem",
           margin: "0.3rem",
         }}
       >
         <Typography
           sx={{
-            width: { xs: "10rem", md: "10%" },
+            width: "10%",
             my: "auto",
-            mx: { xs: "1rem", md: 0 },
+            mx: "1rem",
             overflowX: "auto",
             textWrap: "nowrap",
           }}
@@ -117,6 +118,8 @@ export default function EditBreakdown({
             overflowX: "auto",
             color: "gray",
             textAlign: "center",
+            mx: "1rem",
+            "& .MuiInputBase-input": { textAlign: "center" },
           }}
           onChange={handleEditInput}
         />
@@ -125,8 +128,20 @@ export default function EditBreakdown({
           required
           variant="standard"
           name="amount"
+          type="number"
           value={editedBreakdown.amount}
-          sx={{ width: "10%", overflowX: "auto", color: "gray" }}
+          sx={{
+            width: "10%",
+            overflowX: "auto",
+            color: "gray",
+            mx: "1rem",
+            "& .MuiInputBase-input": { textAlign: "center" },
+            "& input[type='number']::-webkit-outer-spin-button, & input[type='number']::-webkit-inner-spin-button":
+              {
+                WebkitAppearance: "none",
+                margin: 0,
+              },
+          }}
           onChange={handleEditInput}
         />
         |
@@ -136,7 +151,7 @@ export default function EditBreakdown({
           select={true}
           name="category"
           value={category ? category.category : breakdown.category.category}
-          sx={{ width: "20%", overflowX: "auto", color: "gray" }}
+          sx={{ width: "20%", overflowX: "auto", color: "gray", mx: "1rem" }}
           onChange={handleEditInput}
         >
           {categoryData.map((option) => (
@@ -152,7 +167,7 @@ export default function EditBreakdown({
           select={true}
           name="sub_category"
           value={subCategory.name}
-          sx={{ width: "20%", overflowX: "auto", color: "gray" }}
+          sx={{ width: "20%", overflowX: "auto", color: "gray", mx: "1rem" }}
           onChange={handleEditInput}
         >
           {category.sub_category.map((option) => (
@@ -163,7 +178,7 @@ export default function EditBreakdown({
           <MenuItem></MenuItem>
         </TextField>
         |
-        <Typography sx={{ width: "10%", overflowX: "auto" }}>
+        <Typography sx={{ width: "10%", overflowX: "auto", mx: "1rem" }}>
           <CheckCircleOutlineIcon onClick={handleSave} />
         </Typography>
       </Box>
