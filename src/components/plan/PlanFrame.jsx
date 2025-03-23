@@ -190,11 +190,15 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
           bgcolor: palette.primary.main,
           width: "95%",
           height: "fit-content",
+          minHeight: "27rem",
           margin: "auto",
           padding: "1rem",
         }}
       >
-        <Grid2 size={{ xs: 1.5, sm: 1, lg: 0.5 }}>
+        <Grid2
+          size={{ xs: 0, sm: 1, lg: 0.5 }}
+          display={{ xs: "none", sm: "grid" }}
+        >
           <Box
             variant="text"
             sx={{
@@ -215,7 +219,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
           </Box>
         </Grid2>
         <Grid2
-          size={{ xs: 10.5, sm: 10, lg: 11 }}
+          size={{ xs: 12, sm: 10, lg: 11 }}
           container
           sx={{ flexWrap: "nowrap", overflowX: "auto" }}
         >

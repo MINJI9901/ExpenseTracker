@@ -31,25 +31,19 @@ import { UserContext } from "@/context/UserContext";
 import { ProfileContext } from "@/context/ProfileContext";
 // HOOKS
 import { logout, login } from "@/app/login/actions";
-// SUPABASE
-import { createClient } from "@/utils/supabase/client";
-import zIndex from "@mui/material/styles/zIndex";
 
-// for DESKTOP MENU
-const pageMenu = {
-  Expense: ["Expense", "Income"],
-};
+const sections = ["Expense", "Income"];
 
 export default function NavBar() {
   const { palette } = useTheme();
 
   // const [user, setUser] = useState(null);
   const [settings, setSettings] = useState([{ "Login/SignUp": "/login" }]);
-  const [anchorElNav, setAnchorElNav] = useState({});
+  const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [menuItems, setMenuItems] = useState(pageMenu);
+  // const [menuItems, setMenuItems] = useState(pageMenu);
 
-  const { menu, setMenu } = useContext(FilterContext);
+  const { section, setSection } = useContext(FilterContext);
   const { user, setUser } = useContext(UserContext);
   const { userInfo, setUserInfo } = useContext(ProfileContext);
 
@@ -62,11 +56,11 @@ export default function NavBar() {
   }, [user]);
 
   const handleOpenNavMenu = (e, page) => {
-    setAnchorElNav((prev) => ({ ...prev, [page]: e.currentTarget }));
+    setAnchorElNav(e.target.innerText);
   };
 
   const handleCloseNavMenu = (page) => {
-    setAnchorElNav((prev) => ({ ...prev, [page]: null }));
+    setAnchorElNav(null);
   };
 
   // OPEN USER DROP DOWN MENU
@@ -90,22 +84,9 @@ export default function NavBar() {
   const clickMenuItem = (e, page) => {
     const item = e.target.innerText;
 
-    setMenu((prev) => {
-      const arr = [...prev];
-      arr[arr.indexOf(page)] = item;
-      return arr;
-    });
+    setSection(item);
 
-    setMenuItems((prev) => {
-      const obj = { ...prev };
-      if (page !== item) {
-        obj[item] = obj[page];
-        delete obj[page];
-      }
-      return obj;
-    });
-
-    setAnchorElNav((prev) => ({ ...prev, [page]: null }));
+    setAnchorElNav(null);
   };
 
   // CHANGE DATE BASED OFF OF CALENDAR
@@ -123,7 +104,7 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mx: 2,
               display: { xs: "flex", md: "flex" },
@@ -172,50 +153,38 @@ export default function NavBar() {
               Plan <EditNoteIcon />
             </Typography>
 
-            {menu.map((page) => (
-              <Box key={page}>
-                <Button
-                  onClick={(e) => handleOpenNavMenu(e, page)}
-                  sx={{ my: 2, color: "black", display: "block" }}
-                >
-                  {page}
-                </Button>
-                <Menu
-                  id="menu-appbar"
-                  sx={{ display: { xs: "none", md: "block" } }}
-                  anchorEl={anchorElNav[page]}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
-                  open={Boolean(anchorElNav[page])}
-                  onClose={() => handleCloseNavMenu(page)}
-                >
-                  {
-                    // menuItems[page] && menuItems[page].length > 0
-                    //   ?
-                    menuItems[page].map((menu, index) => (
-                      <MenuItem
-                        key={menu}
-                        // component="a"
-                        // href={pageLinks[menu]}
-                        onClick={(e) => clickMenuItem(e, page)}
-                      >
-                        <Typography sx={{ textAlign: "center" }}>
-                          {menu}
-                        </Typography>
-                      </MenuItem>
-                    ))
-                    // : ""
-                  }
-                </Menu>
-              </Box>
-            ))}
+            {/* {menu.map((page) => ( */}
+            <Box>
+              <Button
+                onClick={handleOpenNavMenu}
+                sx={{ my: 2, color: "black", display: "block" }}
+              >
+                {section}
+              </Button>
+              <Menu
+                id="menu-appbar"
+                sx={{ display: { xs: "none", md: "block" } }}
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+              >
+                {sections.map((menu, index) => (
+                  <MenuItem key={menu} onClick={clickMenuItem}>
+                    <Typography sx={{ textAlign: "center" }}>{menu}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            {/* ))} */}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

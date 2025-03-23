@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 // COMPONENTS
 import NavBar from "@/components/generic/NavBar";
 import MobileNavBar from "@/components/generic/MobileNavBar";
+import MobileSectionSelector from "@/components/generic/MobileSectionSelector";
 import Footer from "@/components/generic/Footer";
 import Login from "@/components/user/Login";
 
@@ -59,6 +60,7 @@ export default function RootLayout({ children }) {
           <ProfileProvider>
             <FilterProvider>
               <ThemeProvider key="mui">
+                <MobileSectionSelector />
                 <Box
                   sx={{
                     display: { xs: "none", sm: "block" },
