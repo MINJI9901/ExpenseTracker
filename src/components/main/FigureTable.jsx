@@ -20,7 +20,7 @@ export default function FigureTable({ plannedAmount, usedAmount }) {
           borderRadius: "1rem",
           bgcolor: palette.primary.main,
           height: "12rem",
-          padding: "1rem",
+          padding: "0.7rem",
         }}
       >
         <Grid2

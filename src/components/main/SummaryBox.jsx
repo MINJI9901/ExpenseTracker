@@ -15,8 +15,6 @@ export default function SummaryBox({
       sx={{
         borderRadius: "1rem",
         bgcolor: palette.primary.main,
-        // width: "15rem",
-        // height: "fit-content",
         padding: "1.5rem",
         pt: "2.5rem",
         position: "relative",

@@ -16,7 +16,7 @@ export default function SumBoard({
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        minWidth: { xs: "23rem", sm: "25rem", md: "25rem" },
+        minWidth: "23rem",
         maxWidth: "27rem",
         minHeight: { xs: "5rem", sm: "6rem", md: "6rem" },
         maxHeight: "7rem",

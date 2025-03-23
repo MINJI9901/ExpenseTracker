@@ -211,7 +211,7 @@ export default function Home() {
   );
 
   return (
-    <>
+    <Box px="1rem">
       <Box display={{ md: "flex" }} gap="3rem" margin="1rem 2rem">
         <DateRangeSelector
           dateRangeState={dateRange}
@@ -227,15 +227,14 @@ export default function Home() {
         flexDirection={{ xs: "column", md: "row" }}
         justifyContent="space-between"
         gap={3}
-        margin="1rem"
+        margin="1rem auto"
       >
-        {/* <Box
-          display={{ xs: "flex", md: "block" }}
-          justifyContent={"center"}
-          alignContent={"center"}
-          gap={2}
-        > */}
-        <Box justifySelf="center" alignSelf={"center"}>
+        <Box
+          justifySelf="center"
+          alignSelf={"center"}
+          width={{ xs: "90%", sm: "80%", md: "40%" }}
+          mx={"auto"}
+        >
           <SumBoard
             text={`Total ${section}\nFor ${dateDifference} Days`}
             sumOfMoney={
@@ -252,16 +251,9 @@ export default function Home() {
             }
           />
         </Box>
-        <Box
-          display={{ xs: "block", md: "none" }}
-          width={{ xs: "80%", sm: "60%" }}
-          height={"8rem"}
-          margin={"auto"}
-        >
-          {summaryBox}
-        </Box>
-        {/* </Box> */}
+        {/* <Box width={{ xs: "90%", md: "100%" }} mx={"auto"}> */}
         <FigureTable plannedAmount={plannedAmount} usedAmount={usedAmount} />
+        {/* </Box> */}
       </Box>
       <Box
         display="flex"
@@ -270,25 +262,28 @@ export default function Home() {
         alignContent="center"
         mb="3rem"
       >
-        <Echart
-          title={`Usage For Earnings`}
-          standardData={sumOfMoney.incomeSum}
-          comparedData={usedAmount}
-        />
-        <Echart
-          title={`Usage For\nWhole Budget`}
-          standardData={plannedAmount}
-          comparedData={usedAmount}
-        />
         <Box
-          display={{ xs: "none", md: "block" }}
+          display={"block"}
+          width={{ xs: "90%", md: "30%" }}
           mt={{ xs: 0, md: "3rem" }}
           mb={{ xs: "3rem", md: 0 }}
           mx="auto"
         >
           {summaryBox}
         </Box>
+        <Box display={{ sm: "flex" }}>
+          <Echart
+            title={`Usage For Earnings`}
+            standardData={sumOfMoney.incomeSum}
+            comparedData={usedAmount}
+          />
+          <Echart
+            title={`Usage For\nWhole Budget`}
+            standardData={plannedAmount}
+            comparedData={usedAmount}
+          />
+        </Box>
       </Box>
-    </>
+    </Box>
   );
 }

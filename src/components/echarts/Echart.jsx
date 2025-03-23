@@ -127,8 +127,8 @@ export default function Echart({
   return (
     <Box
       ref={chartRef}
-      width={{ xs: "20rem", md: "23rem", lg: "25rem" }}
-      height={{ xs: "20rem", md: "23rem", lg: "25rem" }}
+      width={{ xs: "20rem", lg: "25rem" }}
+      height={{ xs: "20rem", lg: "25rem" }}
       mx={"auto"}
     >
       <ReactECharts option={option} style={{ width: "100%", height: "100%" }} />

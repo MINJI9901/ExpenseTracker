@@ -61,7 +61,7 @@ export default function BreakdownBoard({
         sx={{
           position: "relative",
           height: "30rem",
-          minWidth: { xs: displayedData.length ? "45rem" : 0, md: 0 },
+          minWidth: { xs: displayedData.length ? "40rem" : 0, md: 0 },
         }}
       >
         <Box
