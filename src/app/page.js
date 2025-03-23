@@ -232,7 +232,7 @@ export default function Home() {
         <Box
           justifySelf="center"
           alignSelf={"center"}
-          width={{ xs: "90%", sm: "80%", md: "40%" }}
+          // width={{ xs: "80%", md: "40%" }}
           mx={"auto"}
         >
           <SumBoard
