@@ -64,7 +64,7 @@ export default function Home() {
   const configureData = (selectedCategory) => {
     // Set the total actual amount for the dateRange
     if (expenseBreakdownData.length) {
-      if (selectedCategory !== "all") {
+      if (selectedCategory !== "all" && section === "Expense") {
         expenseBreakdownData.forEach((expense) =>
           expense.category.category === selectedCategory
             ? (expenseSum += parseFloat(expense.amount))
@@ -77,7 +77,7 @@ export default function Home() {
       }
     }
     if (incomeBreakdownData.length) {
-      if (selectedCategory !== "all") {
+      if (selectedCategory !== "all" && section === "Income") {
         incomeBreakdownData.forEach((income) =>
           income.category.category === selectedCategory
             ? (incomeSum += parseFloat(income.amount))
