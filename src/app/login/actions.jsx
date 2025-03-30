@@ -68,7 +68,7 @@ export async function signup(formData) {
 //     provider: "google",
 //     token: response.credential,
 //     options: {
-//       redirectTo: `${NEXT_PUBLIC_API_URL}/auth/callback`,
+//       redirectTo: `${}/auth/callback`,
 //     },
 //   });
 
@@ -80,7 +80,7 @@ export async function signInWith(provider) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/callback`,
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   });
 
