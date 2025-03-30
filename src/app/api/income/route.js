@@ -56,7 +56,7 @@ export async function PATCH(req) {
 
   const { content } = await req.json();
 
-  const updatedIncome = await income.findByIdAndUpdate(content._id, content);
+  const updatedIncome = await Income.findByIdAndUpdate(content._id, content);
 
   return Response.json(updatedIncome, { status: 200 });
 }

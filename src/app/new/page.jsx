@@ -35,6 +35,7 @@ const Page = () => {
   });
 
   const getBreakdownData = async (isNewAdded) => {
+    setLoading(true);
     let data;
 
     if (user) {

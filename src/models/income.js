@@ -9,7 +9,7 @@ const IncomeSchema = new mongoose.Schema({
     required: true,
   },
   sub_category: {
-    id: { type: String, required: true },
+    _id: { type: String, required: true },
     name: { type: String, required: true },
     expected_amount: { type: Number, required: true },
   },
