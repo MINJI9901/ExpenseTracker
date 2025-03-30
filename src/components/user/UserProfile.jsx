@@ -22,7 +22,7 @@ import PasswordForm from "./PasswordForm";
 import PopupBox from "../notification/PopupBox";
 // HOOKS
 import { getUser, updateUserProfile } from "@/lib/userApi";
-import { deleteUser } from "@/app/login/actions";
+import { deleteUser, logout } from "@/app/login/actions";
 import { toast } from "react-toastify";
 import { ToastMsg } from "../notification/ToastMsg";
 // SUPABASE
@@ -103,11 +103,13 @@ export default function UserProfile() {
     setOpenInput((prev) => ({ ...prev, name: false }));
   };
 
+  // TO LOGOUT
+  const handleLogout = async () => {
+    const res = await logout();
+  };
+
   // TO DELETE ACCOUNT
   const handleDeleteAccount = async () => {
-    // const supabase = createClient();
-    // const { data, error } = supabase.auth.admin.deleteUser(user.id);
-    // console.log(data);
     const res = await deleteUser(user.id);
   };
 
@@ -251,15 +253,25 @@ export default function UserProfile() {
               >
                 Save
               </Button>
-              <Typography
-                color={palette.error.light}
-                fontSize={"0.9rem"}
-                margin={"auto 0"}
-                sx={{ cursor: "pointer" }}
-                onClick={() => setOpenPopup(true)}
-              >
-                Delete Account
-              </Typography>
+              <Box display={"flex"} flexDirection={"column"}>
+                <Typography
+                  fontSize={"0.9rem"}
+                  margin={"auto 0"}
+                  sx={{ cursor: "pointer" }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Typography>
+                <Typography
+                  color={palette.error.light}
+                  fontSize={"0.9rem"}
+                  margin={"auto 0"}
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => setOpenPopup(true)}
+                >
+                  Delete Account
+                </Typography>
+              </Box>
             </Box>
           </Grid2>
         </Grid2>

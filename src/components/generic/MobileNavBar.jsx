@@ -1,20 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 // MUI
 import Box from "@mui/material/Box";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 // MUI ICONS
 import CreateIcon from "@mui/icons-material/Create";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// CONTEXTS
+import { UserContext } from "@/context/UserContext";
 
 export default function MobileNavBar() {
+  const { user, setUser } = useContext(UserContext);
+
   const [value, setValue] = useState(0);
+
   useEffect(() => {
     const checkUrl = (endpoint) => window.location.href.includes(endpoint);
 
@@ -22,18 +24,22 @@ export default function MobileNavBar() {
       ? 1
       : checkUrl("plan")
       ? 2
-      : checkUrl("login")
+      : checkUrl("login") || checkUrl("profile")
       ? 3
       : 0;
 
     setValue(currValue);
-  });
+  }, []);
 
   const pages = [
     { label: "Figure", link: "/", icon: <BarChartIcon /> },
     { label: "New", link: "/new", icon: <CreateIcon /> },
     { label: "Plan", link: "/plan", icon: <EditNoteIcon /> },
-    { label: "User", link: "/login", icon: <AccountCircleIcon /> },
+    {
+      label: "User",
+      link: user ? "/profile" : "/login",
+      icon: <AccountCircleIcon />,
+    },
   ];
 
   const handleValue = (idx) => {

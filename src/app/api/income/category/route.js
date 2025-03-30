@@ -31,7 +31,7 @@ export async function POST(req) {
   await dbConnection();
   const user = await authenticateUser();
 
-  if (searchParams.get("month")) {
+  if (req.nextUrl.searchParams.get("month")) {
     const month = parseInt(req.nextUrl.searchParams.get("month"));
     const year = parseInt(req.nextUrl.searchParams.get("year"));
 

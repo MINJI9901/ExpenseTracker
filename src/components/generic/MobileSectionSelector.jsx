@@ -1,5 +1,6 @@
 "use client";
 import { useContext, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 // CONTEXTS
 import { FilterContext } from "@/context/filterContext";
@@ -7,6 +8,8 @@ import { FilterContext } from "@/context/filterContext";
 const sections = ["Expense", "Income"];
 
 export default function MobileSectionSelector() {
+  const pathname = usePathname();
+
   const { section, setSection } = useContext(FilterContext);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -26,16 +29,18 @@ export default function MobileSectionSelector() {
     // setSection(e.target);
   };
 
+  const notDisplay = pathname === "/login" || pathname === "/profile";
+
   return (
     <Box
-      display={{ xs: "block", sm: "none" }}
+      display={{ xs: notDisplay ? "none" : "block", sm: "none" }}
       position={"absolute"}
-      top={"1rem"}
+      top={pathname === "/new" ? "5rem" : "1rem"}
       right={"1rem"}
-      borderRadius={"0.5rem"}
+      borderRadius={"1rem"}
       bgcolor={"primary.light"}
     >
-      <Button onClick={handleOpen} color="black">
+      <Button onClick={handleOpen} color="black" sx={{ fontSize: "0.8rem" }}>
         {section}
       </Button>
       <Menu

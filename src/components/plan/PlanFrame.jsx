@@ -56,6 +56,7 @@ export default function PlanFrame({ monthlyDate, setSumOfAmount }) {
 
   // GETTING THE CATEGORY DATA
   const fetchCategories = async () => {
+    setLoading(true);
     let data = [];
     // console.log("user in Plan: ", user);
     if (user) {

@@ -18,8 +18,7 @@ import MonthPicker from "@/components/generic/MonthPicker";
 const Page = () => {
   const { palette } = useTheme();
 
-  const filters = useContext(FilterContext);
-  const { section } = filters;
+  const { section } = useContext(FilterContext);
 
   const [monthlyDate, setMonthlyDate] = useState(new Date());
 
